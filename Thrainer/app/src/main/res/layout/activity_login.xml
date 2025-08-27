@@ -73,7 +73,7 @@
                     app:tint="#FFF" />
 
                 <EditText
-                    android:id="@+id/email"
+                    android:id="@+id/emailEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -101,7 +101,7 @@
                     app:tint="#FFF" />
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/passwordEditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -120,17 +120,18 @@
             </LinearLayout>
 
             <!-- Botão Entrar -->
+
+            <!-- Link Criar Conta -->
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Entrar"
-                android:backgroundTint="#0A7EA4"
-                android:textColor="#FFF"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#0A7EA4"
+                android:text="Entrar"
+                android:textColor="#FFF" />
 
-            <!-- Link Criar Conta -->
             <TextView
                 android:id="@+id/createAccount"
                 android:layout_width="wrap_content"

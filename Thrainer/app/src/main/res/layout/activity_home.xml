@@ -1,0 +1,102 @@
+<!-- app/src/main/res/layout/activity_home.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+    <!-- Imagem de fundo -->
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/porta"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Overlay semitransparente (aparece junto com o modal) -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#4DFFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Modal centralizado -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/modalContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#FFF"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Conteúdo do modal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <!-- Título do modal -->
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thrainer"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:layout_marginBottom="24dp"/>
+
+
+
+            <!-- Botão 1 -->
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+
+                android:backgroundTint="#0a7ea4"
+                android:text="Botão 1"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:background="@drawable/rounded_button"/>
+
+            <!-- Botão 2 -->
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+
+                android:backgroundTint="#0a7ea4"
+                android:text="Botão 2"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:background="@drawable/rounded_button"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

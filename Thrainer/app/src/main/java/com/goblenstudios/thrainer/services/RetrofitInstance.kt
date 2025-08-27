@@ -1,0 +1,14 @@
+package com.goblenstudios.thrainer.services
+
+object RetrofitInstance {
+    private val retrofit by lazy {
+        retrofit2.Retrofit.Builder()
+            .baseUrl("http://192.168.1.107:8080/api/")
+            .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
+            .build()
+    }
+
+    val authService: AuthService by lazy {
+        retrofit.create(AuthService::class.java)
+    }
+}
