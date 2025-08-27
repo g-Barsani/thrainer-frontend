@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -30,17 +31,26 @@ class LoginActivity : AppCompatActivity() {
 
         val emailEditText = findViewById<EditText>(R.id.emailEditText)
         val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
+        val textViewRegister = findViewById<TextView>(R.id.registerButton)
         val btnLogin = findViewById<Button>(R.id.loginButton)
+
+        textViewRegister.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
 
         btnLogin.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
+            // oroutine serve para executar o login de forma assíncrona, sem travar a interface do app
             CoroutineScope(Dispatchers.Main).launch {
                 val result = authRepository.login(email, password)
                 if (result.isSuccess) {
                     // Login bem-sucedido, navega para HomeActivity
                     startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                    overridePendingTransition(0, 0)
                     finish()
                 } else {
                     // Erro no login
