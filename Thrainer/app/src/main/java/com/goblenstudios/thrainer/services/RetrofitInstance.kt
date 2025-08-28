@@ -15,4 +15,8 @@ object RetrofitInstance {
     val deckService: DeckService by lazy {
         retrofit.create(DeckService::class.java)
     }
+
+    val deckUserService: DeckUserService by lazy {
+        retrofit.create(DeckUserService::class.java)
+    }
 }
