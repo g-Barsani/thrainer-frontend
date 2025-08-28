@@ -22,4 +22,15 @@ class DeckRepository(private val deckService: DeckService) {
             Result.failure(e)
         }
     }
+
+    suspend fun searchDecksByName(name: String): Result<List<ReturnDeckDto>> {
+        return try {
+            val response = deckService.searchDecksByNAME(name)
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
 }

@@ -9,4 +9,7 @@ interface DeckService {
 
     @GET("api/decks/popular")
     suspend fun getMostPopularDecks(): List<ReturnDeckDto>
+
+    @GET("api/decks/search")
+    suspend fun searchDecksByNAME(name: String): List<ReturnDeckDto>
 }
