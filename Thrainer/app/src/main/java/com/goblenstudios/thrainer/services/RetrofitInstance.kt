@@ -24,4 +24,8 @@ object RetrofitInstance {
         retrofit.create(CardService::class.java)
     }
 
+    val userService: UserService by lazy {
+        retrofit.create(UserService::class.java)
+    }
+
 }
