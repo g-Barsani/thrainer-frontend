@@ -1,6 +1,8 @@
 package com.goblenstudios.thrainer
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,5 +18,22 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Botão para direcionar para StudyRoomActivity
+        val btnGoToStudyRoom = findViewById<Button>(R.id.btnGoToStudyRoom)
+        btnGoToStudyRoom.setOnClickListener {
+            startActivity(Intent(this, StudyRoomActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish() // Encerra a atividade atual e retorna para a anterior
+        }
+
+        // Botão para direcionar para CommunityActivity
+        val btnGoToCommunity = findViewById<Button>(R.id.btnGoToCommunity)
+        btnGoToCommunity.setOnClickListener {
+            startActivity(Intent(this, CommunityActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish() // Encerra a atividade atual e retorna para a anterior
+        }
+
     }
 }

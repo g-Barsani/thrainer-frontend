@@ -1,0 +1,32 @@
+<!-- item_deck.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="@drawable/card_background"
+    android:elevation="4dp">
+
+    <TextView
+        android:id="@+id/tvColuna1"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Coluna 1"/>
+
+    <TextView
+        android:id="@+id/tvColuna2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Coluna 2"/>
+
+    <TextView
+        android:id="@+id/tvColuna3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Coluna 3"/>
+</LinearLayout>
