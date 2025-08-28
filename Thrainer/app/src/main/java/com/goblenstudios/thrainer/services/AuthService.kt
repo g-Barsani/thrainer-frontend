@@ -13,6 +13,7 @@ interface AuthService {
         @Query("email") email: String,
         @Query("password") password: String
     ): AuthResponseDto
+
     @POST("auth/register")
     suspend fun register(
         @Body createUserDto: CreateUserDto
