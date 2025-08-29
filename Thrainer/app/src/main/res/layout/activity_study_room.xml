@@ -48,12 +48,10 @@
         android:layout_height="match_parent"
         android:background="#4d7a46"
         android:visibility="gone"
-        android:layout_gravity="start"
         android:elevation="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        <!-- Conteúdo do container aqui -->
 
         <Button
             android:id="@+id/btnCloseOverlay"
@@ -62,6 +60,37 @@
             android:text="X"
             android:layout_gravity="top|end"
             android:layout_margin="8dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="48dp"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tvOverlayTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minha Lista"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginBottom="12dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tvOverlayTitle"
+                app:layout_constraintBottom_toBottomOf="parent">
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

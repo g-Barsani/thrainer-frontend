@@ -18,7 +18,7 @@
             android:name=".FlashcardActivity"
             android:exported="false" />
         <activity
-            android:name=".StudyRoomActivity"
+            android:name=".StudyRoom.StudyRoomActivity"
             android:exported="false" />
         <activity
             android:name=".CommunityActivity"
