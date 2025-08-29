@@ -2,6 +2,7 @@ package com.goblenstudios.thrainer
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -64,6 +65,12 @@ class LoginActivity : AppCompatActivity() {
                         .apply()
 
                     Toast.makeText(this@LoginActivity, "Login bem-sucedido: ${prefs.getString("user_email", "")}", Toast.LENGTH_LONG).show()
+
+                    println("Token: ${response?.token}")
+                    println("ID do usuário: ${response?.user?.idUser}")
+                    println("Nome: ${response?.user?.name}")
+                    println("Email: ${response?.user?.email}")
+                    println("Público: ${response?.user?.isPublic}")
 
                     // Login bem-sucedido, navega para HomeActivity
                     startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
