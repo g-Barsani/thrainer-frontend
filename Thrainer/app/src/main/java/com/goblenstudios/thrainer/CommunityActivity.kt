@@ -7,14 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.goblenstudios.thrainer.dtos.ReturnDeckDto
+import com.goblenstudios.thrainer.repositories.DeckRepository
+import com.goblenstudios.thrainer.services.RetrofitInstance
+import kotlinx.coroutines.launch
 
 class CommunityActivity : AppCompatActivity() {
+
+    val deckRepository = DeckRepository(RetrofitInstance.deckService)
+
     // Classe de dados para o deck
     data class Deck(val coluna1: String, val coluna2: String, val coluna3: String)
 
@@ -23,9 +32,9 @@ class CommunityActivity : AppCompatActivity() {
         RecyclerView.Adapter<CommunityAdapter.DeckViewHolder>() {
 
         class DeckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val tvColuna1: TextView = itemView.findViewById(R.id.tvColuna1)
-            val tvColuna2: TextView = itemView.findViewById(R.id.tvColuna2)
-            val tvColuna3: TextView = itemView.findViewById(R.id.tvColuna3)
+            val tvColumn1: TextView = itemView.findViewById(R.id.tvColumn1)
+            val tvColumn2: TextView = itemView.findViewById(R.id.tvColumn2)
+            val tvColumn3: TextView = itemView.findViewById(R.id.tvColumn3)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeckViewHolder {
@@ -36,9 +45,9 @@ class CommunityActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: DeckViewHolder, position: Int) {
             val deck = decks[position]
-            holder.tvColuna1.text = deck.coluna1
-            holder.tvColuna2.text = deck.coluna2
-            holder.tvColuna3.text = deck.coluna3
+            holder.tvColumn1.text = deck.coluna1
+            holder.tvColumn2.text = deck.coluna2
+            holder.tvColumn3.text = deck.coluna3
         }
 
         override fun getItemCount() = decks.size
@@ -55,26 +64,33 @@ class CommunityActivity : AppCompatActivity() {
             insets
         }
 
-        // Dados mockados
-        val mockDecks = listOf(
-            Deck("Deck 1", "Autor 1", "10 cards"),
-            Deck("Deck 2", "Autor 2", "15 cards"),
-            Deck("Deck 3", "Autor 3", "8 cards")
-        )
-
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewDecks)
-
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
-
-        recyclerView.adapter = CommunityAdapter(mockDecks)
-
         recyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
 
-
-
-
+        //Quando iniciar a activity, carrega os decks mais populares
+        lifecycleScope.launch {
+            val result = deckRepository.getMostPopularDecks()
+            if (result.isSuccess) {
+                val deckDtos = result.getOrNull() ?: emptyList()
+                val decks = deckDtos.map { dto ->
+                    Deck(
+                        coluna1 = dto.name ?: "",
+                        coluna2 = dto.creatorUserName ?: "",
+                        coluna3 = "${3} cards"
+                    )
+                }
+                recyclerView.adapter = CommunityAdapter(decks)
+            } else {
+                Toast.makeText(
+                    this@CommunityActivity,
+                    "Erro ao carregar decks: ${result.exceptionOrNull()?.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 
         // Voltar para home
         val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)

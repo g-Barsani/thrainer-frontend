@@ -4,12 +4,12 @@ import com.goblenstudios.thrainer.dtos.ReturnDeckDto
 import retrofit2.http.GET
 
 interface DeckService {
-    @GET("api/decks/public")
+    @GET("decks/public")
     suspend fun getAllPublicDecks(): List<ReturnDeckDto>
 
-    @GET("api/decks/popular")
+    @GET("decks/popular")
     suspend fun getMostPopularDecks(): List<ReturnDeckDto>
 
-    @GET("api/decks/search")
+    @GET("decks/search")
     suspend fun searchDecksByNAME(name: String): List<ReturnDeckDto>
 }
