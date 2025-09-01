@@ -1,5 +1,6 @@
 package com.goblenstudios.thrainer.repositories
 
+import com.goblenstudios.thrainer.dtos.CreateDeckDto
 import com.goblenstudios.thrainer.services.DeckService
 import com.goblenstudios.thrainer.dtos.ReturnDeckDto
 
@@ -25,7 +26,16 @@ class DeckRepository(private val deckService: DeckService) {
 
     suspend fun searchDecksByName(name: String): Result<List<ReturnDeckDto>> {
         return try {
-            val response = deckService.searchDecksByNAME(name)
+            val response = deckService.searchDecksByName(name)
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun createDeck(dto: CreateDeckDto): Result<ReturnDeckDto> {
+        return try {
+            val response = deckService.createDeck(dto)
             Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)

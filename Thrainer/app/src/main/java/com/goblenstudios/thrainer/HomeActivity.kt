@@ -65,5 +65,13 @@ class HomeActivity : AppCompatActivity() {
 
         }
 
+        // Botão de teste para abrir CreateDeckActivity
+        val btnOpenCreateDeck = findViewById<Button>(R.id.btnOpenCreateDeck)
+        btnOpenCreateDeck.setOnClickListener {
+            CreateDeckDialogFragment().show(supportFragmentManager, "CreateDeckDialog")
+        }
+
+
+
     }
 }
