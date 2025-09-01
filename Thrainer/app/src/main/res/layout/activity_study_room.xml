@@ -139,7 +139,7 @@
                     android:layout_weight="1">
 
                     <FrameLayout
-                        android:id="@+id/draggableArea"
+                        android:id="@+id/draggableArea1"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:background="@android:color/black"
@@ -149,10 +149,26 @@
                             android:id="@+id/dragView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="me arrasta"
+                            android:text="me arrasta 1 "
                             android:textColor="@android:color/white"
                             android:gravity="center"/>
                     </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/draggableArea2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:id="@+id/dragView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Arraste 2"
+                            android:textColor="@android:color/white"
+                            android:gravity="center"/>
+                    </FrameLayout>
+                    <!-- Adicione mais conforme necessário -->
                 </LinearLayout>
         </LinearLayout>
     </FrameLayout>

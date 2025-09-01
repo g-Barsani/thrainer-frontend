@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvTituloLista"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="0dp">
@@ -60,6 +60,16 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Autor"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Cards"
             android:textAlignment="textStart"
             android:textColor="@android:color/white"
             android:textStyle="bold" />

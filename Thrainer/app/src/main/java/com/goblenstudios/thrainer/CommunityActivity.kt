@@ -24,16 +24,17 @@ class CommunityActivity : AppCompatActivity() {
     val deckRepository = DeckRepository(RetrofitInstance.deckService)
 
     // Classe de dados para o deck
-    data class Deck(val deckName: String, val userName: String, val numberOfCards: String)
+    data class Deck(val deckName: String, val userName: String, val numberOfCards: String, val numberOfDownloads: String)
 
     // Adapter para o RecyclerView. Conecta dados á interface do RecyclerView
     class CommunityAdapter(private val decks: List<Deck>) :
         RecyclerView.Adapter<CommunityAdapter.DeckViewHolder>() {
 
         class DeckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val tvColumn1: TextView = itemView.findViewById(R.id.tvColumn1)
-            val tvColumn2: TextView = itemView.findViewById(R.id.tvColumn2)
-            val tvColumn3: TextView = itemView.findViewById(R.id.tvColumn3)
+            val tvDeckName: TextView = itemView.findViewById(R.id.tvDeckName)
+            val tvUsername: TextView = itemView.findViewById(R.id.tvUsername)
+            val tvNumberOfCards: TextView = itemView.findViewById(R.id.tvNumberOfCards)
+            val tvNumberOfDownloads: TextView = itemView.findViewById(R.id.tvNumberOfDownloads)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeckViewHolder {
@@ -44,9 +45,9 @@ class CommunityActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: DeckViewHolder, position: Int) {
             val deck = decks[position]
-            holder.tvColumn1.text = deck.deckName
-            holder.tvColumn2.text = deck.userName
-            holder.tvColumn3.text = deck.numberOfCards
+            holder.tvDeckName.text = deck.deckName
+            holder.tvUsername.text = deck.userName
+            holder.tvNumberOfDownloads.text = deck.numberOfCards
         }
 
         override fun getItemCount() = decks.size
@@ -78,7 +79,8 @@ class CommunityActivity : AppCompatActivity() {
                     Deck(
                         deckName = dto.name ?: "",
                         userName = dto.creatorUserName ?: "",
-                        numberOfCards = dto.numberOfCards ?.toString() ?: "0"
+                        numberOfCards = dto.numberOfCards ?.toString() ?: "0",
+                        numberOfDownloads = "pendente" // Implementar quando a API suportar
                     )
                 }
                 recyclerView.adapter = CommunityAdapter(decks)
