@@ -77,22 +77,24 @@ class StudyRoomActivity : AppCompatActivity() {
 
         val lltop = findViewById<LinearLayout>(R.id.llTop)  // De onde o objeto view pode ser arrastado
         val llBottom = findViewById<LinearLayout>(R.id.llBottom)  // Destino onde o objeto view pode ser solto
-        val dragLayout = findViewById<FrameLayout>(R.id.draggableArea)  // Objeto layout que será arrastado
+//        val dragLayout = findViewById<FrameLayout>(R.id.draggableArea)  // Objeto layout que será arrastado
+
+        val itens = listOf("Arrasta 1", "Arrasta 2", "Arrasta 3", "Arrasta 4")
 
         lltop.setOnDragListener(dragListener)
         llBottom.setOnDragListener(dragListener)
-        dragLayout.setOnLongClickListener {
-            val clipText = "Deck de Exemplo"
-            val item = ClipData.Item(clipText)
-            val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
-            val data = ClipData(clipText, mimeTypes, item)
-
-            val dragShadowBuilder = View. DragShadowBuilder(it)
-            it.startDragAndDrop(data, dragShadowBuilder, it, 0)
-
-            it.visibility = View.INVISIBLE
-            true
-        }
+//        dragLayout.setOnLongClickListener {
+//            val clipText = "Deck de Exemplo"
+//            val item = ClipData.Item(clipText)
+//            val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
+//            val data = ClipData(clipText, mimeTypes, item)
+//
+//            val dragShadowBuilder = View. DragShadowBuilder(it)
+//            it.startDragAndDrop(data, dragShadowBuilder, it, 0)
+//
+//            it.visibility = View.INVISIBLE
+//            true
+//        }
 
         // Botões e overlays
         val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)

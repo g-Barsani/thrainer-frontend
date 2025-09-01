@@ -10,23 +10,30 @@
     android:elevation="4dp">
 
     <TextView
-        android:id="@+id/tvColumn1"
+        android:id="@+id/tvDeckName"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Coluna 1"/>
+        android:text="Feitiço"/>
 
     <TextView
-        android:id="@+id/tvColumn2"
+        android:id="@+id/tvUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Coluna 2"/>
+        android:text="Autor"/>
 
     <TextView
-        android:id="@+id/tvColumn3"
+        android:id="@+id/tvNumberOfCards"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Coluna 3"/>
+        android:text="Qtt de cards"/>
+
+    <TextView
+        android:id="@+id/tvNumberOfDownloads"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Downloads"/>
 </LinearLayout>
