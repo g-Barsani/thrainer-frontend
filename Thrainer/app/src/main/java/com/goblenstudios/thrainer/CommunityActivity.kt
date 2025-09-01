@@ -47,7 +47,8 @@ class CommunityActivity : AppCompatActivity() {
             val deck = decks[position]
             holder.tvDeckName.text = deck.deckName
             holder.tvUsername.text = deck.userName
-            holder.tvNumberOfDownloads.text = deck.numberOfCards
+            holder.tvNumberOfCards.text = deck.numberOfCards
+            holder.tvNumberOfDownloads.text = deck.numberOfDownloads
         }
 
         override fun getItemCount() = decks.size
@@ -80,7 +81,7 @@ class CommunityActivity : AppCompatActivity() {
                         deckName = dto.name ?: "",
                         userName = dto.creatorUserName ?: "",
                         numberOfCards = dto.numberOfCards ?.toString() ?: "0",
-                        numberOfDownloads = "pendente" // Implementar quando a API suportar
+                        numberOfDownloads = dto.numberOfDownloads ?.toString() ?: "0",
                     )
                 }
                 recyclerView.adapter = CommunityAdapter(decks)

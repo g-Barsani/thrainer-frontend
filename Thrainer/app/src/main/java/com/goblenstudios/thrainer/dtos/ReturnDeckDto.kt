@@ -7,4 +7,5 @@ data class ReturnDeckDto (
     val idUserCreator: Long,
     val creatorUserName: String,
     val numberOfCards: Integer,
+    val numberOfDownloads: Integer,
 )
