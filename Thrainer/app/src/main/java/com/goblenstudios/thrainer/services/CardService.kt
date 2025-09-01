@@ -10,16 +10,16 @@ import retrofit2.http.Path
 
 interface CardService {
 
-    @GET("api/cards/{id}")
+    @GET("cards/{id}")
     suspend fun getCardById(@Path("id") id: Long): ReturnCardDto
 
-    @GET("api/cards/deck/{deckId}")
+    @GET("cards/deck/{deckId}")
     suspend fun getCardsByDeck(@Path("deckId") deckId: Long): List<ReturnCardDto>
 
-    @POST("api/cards")
+    @POST("cards")
     suspend fun createCard(@Body dto: CreateCardDto): ReturnCardDto
 
-    @DELETE("api/cards/{id}")
+    @DELETE("cards/{id}")
     suspend fun deleteCard(@Path("id") id: Long): Void
 
 }

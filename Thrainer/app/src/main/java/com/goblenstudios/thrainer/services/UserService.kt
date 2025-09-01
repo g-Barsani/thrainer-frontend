@@ -7,18 +7,18 @@ import retrofit2.http.Query
 
 interface UserService {
 
-    @GET("api/users/{id})")
+    @GET("users/{id})")
     suspend fun getUserById(@Path("id") id: Long): ReturnUserDto
 
-    @GET("api/users/by-email")
+    @GET("users/by-email")
     suspend fun getUserByEmail(@Query("email") email: String): ReturnUserDto
 
-    @GET("api/users/search")
+    @GET("users/search")
     suspend fun searchUsersByName(@Query("name") name: String): List<ReturnUserDto>
 
-    @GET("api/users/engaged")
+    @GET("users/engaged")
     suspend fun getMostEngagedUsers(): List<ReturnUserDto>
 
-    @GET("api/users")
+    @GET("users")
     suspend fun getAllUsers(): List<ReturnUserDto>
 }

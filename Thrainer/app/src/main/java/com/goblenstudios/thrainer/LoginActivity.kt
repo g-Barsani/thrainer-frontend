@@ -2,6 +2,7 @@ package com.goblenstudios.thrainer
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -15,6 +16,7 @@ import com.goblenstudios.thrainer.services.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.apply
 
 class LoginActivity : AppCompatActivity() {
     private val authRepository = AuthRepository(RetrofitInstance.authService)
@@ -44,10 +46,32 @@ class LoginActivity : AppCompatActivity() {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            // oroutine serve para executar o login de forma assíncrona, sem travar a interface do app
+            // Coroutine serve para executar o login de forma assíncrona, sem travar a interface do app
+
             CoroutineScope(Dispatchers.Main).launch {
+
                 val result = authRepository.login(email, password)
                 if (result.isSuccess) {
+
+                    //Armazena o token de autenticação nas SharedPreferences
+                    val response = result.getOrNull()
+                    val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+                    prefs.edit()
+                        .putString("auth_token", response?.token)
+                        .putLong("user_id", response?.user?.idUser ?: -1L)
+                        .putString("user_name", response?.user?.name)
+                        .putString("user_email", response?.user?.email)
+                        .putBoolean("user_is_public", response?.user?.isPublic ?: false)
+                        .apply()
+
+                    Toast.makeText(this@LoginActivity, "Login bem-sucedido: ${prefs.getString("user_email", "")}", Toast.LENGTH_LONG).show()
+
+                    println("Token: ${response?.token}")
+                    println("ID do usuário: ${response?.user?.idUser}")
+                    println("Nome: ${response?.user?.name}")
+                    println("Email: ${response?.user?.email}")
+                    println("Público: ${response?.user?.isPublic}")
+
                     // Login bem-sucedido, navega para HomeActivity
                     startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                     overridePendingTransition(0, 0)

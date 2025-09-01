@@ -3,11 +3,17 @@ package com.goblenstudios.thrainer
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+
+import kotlin.apply
+import kotlin.collections.remove
+
 import com.goblenstudios.thrainer.StudyRoom.StudyRoomActivity
+
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +40,29 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, CommunityActivity::class.java))
             overridePendingTransition(0, 0)
             finish() // Encerra a atividade atual e retorna para a anterior
+        }
+
+        // Botão para deslogar e voltar para LoginActivity
+        val btnLogout = findViewById<ImageButton>(R.id.btnLogout)
+        btnLogout.setOnClickListener {
+
+            val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+            prefs.edit()
+                .remove("auth_token")
+                .remove("user_id")
+                .remove("user_name")
+                .remove("user_email")
+                .remove("user_is_public")
+                .apply()
+
+
+
+            println("Token removido: ${prefs.getString("auth_token", "Nulo")}")
+
+            startActivity(Intent(this, LoginActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish() // Encerra a atividade atual e retorna para a anterior
+
         }
 
     }
