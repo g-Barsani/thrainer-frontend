@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.goblenstudios.thrainer.dtos.ReturnDeckDto
 import com.goblenstudios.thrainer.repositories.DeckRepository
 import com.goblenstudios.thrainer.services.RetrofitInstance
 import kotlinx.coroutines.launch
@@ -25,7 +24,7 @@ class CommunityActivity : AppCompatActivity() {
     val deckRepository = DeckRepository(RetrofitInstance.deckService)
 
     // Classe de dados para o deck
-    data class Deck(val coluna1: String, val coluna2: String, val coluna3: String)
+    data class Deck(val deckName: String, val userName: String, val numberOfCards: String)
 
     // Adapter para o RecyclerView. Conecta dados á interface do RecyclerView
     class CommunityAdapter(private val decks: List<Deck>) :
@@ -45,9 +44,9 @@ class CommunityActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: DeckViewHolder, position: Int) {
             val deck = decks[position]
-            holder.tvColumn1.text = deck.coluna1
-            holder.tvColumn2.text = deck.coluna2
-            holder.tvColumn3.text = deck.coluna3
+            holder.tvColumn1.text = deck.deckName
+            holder.tvColumn2.text = deck.userName
+            holder.tvColumn3.text = deck.numberOfCards
         }
 
         override fun getItemCount() = decks.size
@@ -77,9 +76,9 @@ class CommunityActivity : AppCompatActivity() {
                 val deckDtos = result.getOrNull() ?: emptyList()
                 val decks = deckDtos.map { dto ->
                     Deck(
-                        coluna1 = dto.name ?: "",
-                        coluna2 = dto.creatorUserName ?: "",
-                        coluna3 = "${3} cards"
+                        deckName = dto.name ?: "",
+                        userName = dto.creatorUserName ?: "",
+                        numberOfCards = dto.numberOfCards ?.toString() ?: "0"
                     )
                 }
                 recyclerView.adapter = CommunityAdapter(decks)
