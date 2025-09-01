@@ -13,28 +13,28 @@ import retrofit2.http.Query
 
 interface UserCardService {
 
-    @POST("api/user-cards")
+    @POST("user-cards")
     suspend fun createUserCard( @Body dto: CreateUserCardDto): ReturnUserCardDto
 
-    @PUT("api/user-cards")
+    @PUT("user-cards")
     suspend fun updateUserCard( @Body dto: UpdateUserCardDto): ReturnUserCardDto
 
-    @GET("api/user-cards/{cardId}")
+    @GET("user-cards/{cardId}")
     suspend fun getBestUsersByCard( @Body cardId: Long): ReturnUserCardDto
 
-    @GET("api/user-cards/user/{userId}/deck/{deckId}")
+    @GET("user-cards/user/{userId}/deck/{deckId}")
     suspend fun getUserCardsByUserAndDeck( @Path("userId") userId: Long, @Path("deckId") deckId: Long): List<ReturnUserCardDto>
 
-    @GET("api/user-cards/user/{userId}")
+    @GET("user-cards/user/{userId}")
     suspend fun getUserCardsByUser( @Path("userId") userId: Long): List<ReturnUserCardDto>
 
-    @POST("api/user-cards/{userId}/correct/{cardId}")
+    @POST("user-cards/{userId}/correct/{cardId}")
     suspend fun markCardAsCorrect( @Path("userId") userId: Long, @Path("cardId") cardId: Long): ReturnUserCardDto
 
-    @POST("api/user-cards/{userId}/wrong/{cardId}")
+    @POST("user-cards/{userId}/wrong/{cardId}")
     suspend fun markCardAsWrong( @Path("userId") userId: Long, @Path("cardId") cardId: Long): ReturnUserCardDto
 
-    @GET("api/user-cards/practice")
+    @GET("user-cards/practice")
     suspend fun practiceCardsByDeck(
         @Query("userId") userId: Long,
         @Query("deckId") deckId: Long,

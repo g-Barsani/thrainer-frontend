@@ -18,10 +18,10 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/tvTituloLista"
+        android:id="@+id/tvTitleList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Decks da Comunidade"
+        android:text="Feitiços da Comunidade"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"
@@ -31,6 +31,49 @@
         app:layout_constraintBottom_toTopOf="@id/recyclerViewDecks"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="8dp"/>
+
+    <!-- Títulos das colunas -->
+    <LinearLayout
+        android:id="@+id/llTitulosColunas"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloLista"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="0dp">
+
+        <TextView
+            android:layout_width="93dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Nome"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Autor"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Baixados"
+            android:textAlignment="textStart"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <!--    Espaço da lista -->
     <androidx.recyclerview.widget.RecyclerView

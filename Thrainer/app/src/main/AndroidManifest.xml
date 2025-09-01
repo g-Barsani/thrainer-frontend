@@ -18,12 +18,13 @@
             android:name=".FlashcardActivity"
             android:exported="false" />
         <activity
-            android:name=".StudyRoomActivity"
-            android:exported="false" />
+            android:name=".StudyRoom.StudyRoomActivity"
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".CommunityActivity"
             android:exported="true">
-
         </activity>
         <activity
             android:name=".RegisterActivity"

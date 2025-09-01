@@ -6,4 +6,5 @@ data class ReturnDeckDto (
     val isPublic: Boolean,
     val idUserCreator: Long,
     val creatorUserName: String,
+    val numberOfCards: Integer,
 )

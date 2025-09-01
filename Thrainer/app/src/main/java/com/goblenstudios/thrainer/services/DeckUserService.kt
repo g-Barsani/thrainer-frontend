@@ -8,15 +8,15 @@ import retrofit2.http.Query
 
 interface DeckUserService {
 
-    @POST("api/deck-users/copy")
+    @POST("deck-users/copy")
     suspend fun copyDeckToUser(@Query("userId") userId: Long,
                                 @Query("deckId") deckId: Long
     ): ReturnDeckUserDto
 
-    @GET("api/deck-users/user/{userId}")
+    @GET("deck-users/user/{userId}")
     suspend fun getDeckUsersByUser(@Path("userId") userId: Long): List<ReturnDeckUserDto>
 
-    @GET("api/deck-users/deck/{deckId}")
+    @GET("deck-users/deck/{deckId}")
     suspend fun getDeckUsersByDeck(@Path("deckId") deckId: Long): List<ReturnDeckUserDto>
 
 
