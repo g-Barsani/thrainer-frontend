@@ -133,8 +133,9 @@
                     android:gravity="center"
                     android:layout_marginBottom="12dp"/>
 
+                <!-- Botão criar deck -->
                 <Button
-                    android:id="@+id/tvAdd"
+                    android:id="@+id/btnOpenCreateDeck"
                     android:layout_width="1dp"
                     android:layout_height="100dp"
                     android:layout_weight="1"
@@ -143,7 +144,7 @@
                     android:textSize="18sp"
                     android:textColor="@android:color/white"
                     android:gravity="center"
-                    android:layout_marginBottom="12dp"/>
+                    android:layout_marginBottom="12dp" />
             </LinearLayout>
 
 

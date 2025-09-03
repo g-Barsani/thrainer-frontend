@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.goblenstudios.thrainer.CreateDeckDialogFragment
 import com.goblenstudios.thrainer.FlashcardActivity
 import com.goblenstudios.thrainer.HomeActivity
 import com.goblenstudios.thrainer.R
@@ -156,6 +157,12 @@ class StudyRoomActivity : AppCompatActivity() {
             startActivity(Intent(this, HomeActivity::class.java)) // Inicia a MainActivity
             overridePendingTransition(0, 0)
             finish() // Finaliza a atividade atual e retorna para a anterior (MainActivity)
+        }
+
+        // Botão de teste para abrir CreateDeckActivity
+        val btnOpenCreateDeck = findViewById<Button>(R.id.btnOpenCreateDeck)
+        btnOpenCreateDeck.setOnClickListener {
+            CreateDeckDialogFragment().show(supportFragmentManager, "CreateDeckDialog")
         }
     }
 }
