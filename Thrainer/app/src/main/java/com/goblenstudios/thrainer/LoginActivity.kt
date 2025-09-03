@@ -75,9 +75,9 @@ class LoginActivity : AppCompatActivity() {
                     println("Público: ${response?.user?.isPublic}")
 
                     // Login bem-sucedido, navega para HomeActivity
-                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                    overridePendingTransition(0, 0)
-                    finish()
+//                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+//                    overridePendingTransition(0, 0)
+//                    finish()
                 } else {
                     // Erro no login
                     Toast.makeText(this@LoginActivity, "Login falhou: ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
@@ -87,33 +87,60 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun playVideo() {
-        // Apply the custom theme here
         val videoDialog = android.app.Dialog(this@LoginActivity, R.style.FullScreenDialogTheme)
-
-        val videoView = android.widget.VideoView(this@LoginActivity)
-        videoView.layoutParams = android.widget.FrameLayout.LayoutParams(
+        val textureView = android.view.TextureView(this@LoginActivity)
+        textureView.layoutParams = android.widget.FrameLayout.LayoutParams(
             android.view.ViewGroup.LayoutParams.MATCH_PARENT,
             android.view.ViewGroup.LayoutParams.MATCH_PARENT
         )
-        videoDialog.setContentView(videoView)
-
-        // This line is good to keep, though the theme does most of the work
+        videoDialog.setContentView(textureView)
         videoDialog.window?.setLayout(
             android.view.WindowManager.LayoutParams.MATCH_PARENT,
             android.view.WindowManager.LayoutParams.MATCH_PARENT
         )
-
         videoDialog.setCancelable(false)
-        videoView.setVideoPath("android.resource://" + packageName + "/" + R.raw.door_animation)
 
-        videoView.setOnCompletionListener {
-            videoDialog.dismiss()
-            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-            overridePendingTransition(0, 0)
-            finish()
+        textureView.surfaceTextureListener = object : android.view.TextureView.SurfaceTextureListener {
+            var mediaPlayer: android.media.MediaPlayer? = null
+
+            override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
+                mediaPlayer = android.media.MediaPlayer()
+                val afd = resources.openRawResourceFd(R.raw.door_animation)
+                mediaPlayer?.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                afd.close()
+                mediaPlayer?.setSurface(android.view.Surface(surface))
+
+                mediaPlayer?.setOnVideoSizeChangedListener { mp, videoWidth, videoHeight ->
+                    val viewWidth = textureView.width.toFloat()
+                    val viewHeight = textureView.height.toFloat()
+                    val scaleX = viewWidth / videoWidth
+                    val scaleY = viewHeight / videoHeight
+                    val scale = maxOf(scaleX, scaleY)
+                    val matrix = android.graphics.Matrix()
+                    matrix.setScale(scale, scale, viewWidth / 2, viewHeight / 2)
+                    textureView.setTransform(matrix)
+                }
+
+                mediaPlayer?.setOnCompletionListener {
+                    mediaPlayer?.release()
+                    videoDialog.dismiss()
+                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
+                }
+
+                mediaPlayer?.setOnPreparedListener { it.start() }
+                mediaPlayer?.prepareAsync()
+            }
+
+            override fun onSurfaceTextureSizeChanged(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {}
+            override fun onSurfaceTextureDestroyed(surface: android.graphics.SurfaceTexture): Boolean {
+                mediaPlayer?.release()
+                return true
+            }
+            override fun onSurfaceTextureUpdated(surface: android.graphics.SurfaceTexture) {}
         }
 
         videoDialog.show()
-        videoView.start()
     }
 }
