@@ -39,33 +39,38 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Thrainer"
+                android:layout_width="228dp"
+                android:layout_height="81dp"
+                android:layout_marginTop="148dp"
+                android:layout_marginBottom="1000dp"
+                android:elevation="60dp"
                 android:fontFamily="@font/goudymediaeval"
-                android:textSize="45sp"
-                android:textColor="@android:color/white"
-                android:textStyle=""
                 android:gravity="center"
                 android:shadowDx="0"
                 android:shadowDy="2"
                 android:shadowRadius="4"
-                android:elevation="60dp"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:text="Thrainer"
+                android:textColor="@android:color/white"
+                android:textSize="45sp"
+                android:textStyle=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.457"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/emailContainer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:background="#979797"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/rounded_inputs"
                 android:padding="12dp"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/title">
 
                 <EditText
                     android:id="@+id/emailEditText"
@@ -90,8 +95,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="#979797"
+                android:background="@drawable/rounded_inputs"
                 android:padding="12dp"
+                android:radius="80dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,10 +133,10 @@
 
             <Button
                 android:id="@+id/loginButton"
-                android:layout_width="114dp"
+                android:layout_width="match_parent"
                 android:layout_height="51dp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#0A7EA4"
+                android:backgroundTint="#a39590"
                 android:fontFamily="@font/goudymediaeval"
                 android:text="Entrar"
                 android:textColor="#FFF"
@@ -143,19 +149,19 @@
                 android:id="@+id/registerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:fontFamily="@font/goudymediaeval"
                 android:padding="10dp"
                 android:text="Não possui uma conta? Cadastre-se"
-                android:fontFamily="@font/goudymediaeval"
                 android:textColor="#FFF"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.428"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginButton" />
+                app:layout_constraintTop_toBottomOf="@+id/loginButton"
+                app:layout_constraintVertical_bias="0.197" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

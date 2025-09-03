@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/porta"
+        android:src="@drawable/newdoor"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,30 +47,27 @@
                 android:layout_height="wrap_content"
                 android:text="Cadastre-se"
                 android:textSize="22sp"
-                android:textColor="#000"
+                android:textColor="#ffffff"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:shadowDx="0"
                 android:shadowDy="2"
                 android:shadowRadius="4"
-                android:layout_marginBottom="24dp"/>
+                android:layout_marginBottom="24dp"
+                android:fontFamily="@font/goudymediaeval"
+                />
 
             <!-- Campo de Nome -->
+
+            <!-- Campo E-mail -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:background="#979797"
+                android:background="@drawable/rounded_inputs"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@android:drawable/ic_dialog_email"
-                    app:tint="#FFF" />
 
                 <EditText
                     android:id="@+id/nomeEditText"
@@ -78,28 +75,22 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
+                    android:fontFamily="@font/goudymediaeval"
                     android:hint="Nome"
                     android:inputType="text"
-                    android:textColor="#0000"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColor="#FFF"
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="25sp" />
             </LinearLayout>
 
-            <!-- Campo E-mail -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:background="#979797"
+                android:background="@drawable/rounded_inputs"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@android:drawable/ic_dialog_email"
-                    app:tint="#FFF" />
 
                 <EditText
                     android:id="@+id/emailEditText"
@@ -109,7 +100,9 @@
                     android:background="@android:color/transparent"
                     android:hint="E-mail"
                     android:inputType="textEmailAddress"
-                    android:textColor="#0000"
+                    android:fontFamily="@font/goudymediaeval"
+                    android:textColor="#FFF"
+                    android:textSize="25sp"
                     android:textColorHint="#80FFFFFF" />
             </LinearLayout>
 
@@ -117,17 +110,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#979797"
+                android:background="@drawable/rounded_inputs"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@android:drawable/ic_menu_view"
-                    app:tint="#FFF" />
 
                 <EditText
                     android:id="@+id/passwordEditText"
@@ -137,8 +123,10 @@
                     android:background="@android:color/transparent"
                     android:hint="Senha"
                     android:inputType="textPassword"
+                    android:textColorHint="#80FFFFFF"
+                    android:fontFamily="@font/goudymediaeval"
                     android:textColor="#FFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textSize="25sp"/>
 
                 <ImageButton
                     android:id="@+id/showPassword"
@@ -153,7 +141,13 @@
                 android:id="@+id/switchToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Você quer criar um perfil público?"/>
+                android:text="Você quer criar um perfil público?"
+                android:textSize="16sp"
+                android:fontFamily="@font/goudymediaeval"
+                android:textColor="#FFF"
+                android:layout_marginTop="8dp"
+                android:trackTint="#000000"
+                />
 
 
 
@@ -166,9 +160,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
-                android:backgroundTint="#0A7EA4"
+                android:backgroundTint="#a39590"
+                android:fontFamily="@font/goudymediaeval"
                 android:text="Cadastrar"
-                android:textColor="#FFF" />
+                android:textColor="#FFF"
+                android:textSize="25sp" />
 
 
 
@@ -178,8 +174,9 @@
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:text="Já possui uma conta? Entrar"
+                android:fontFamily="@font/goudymediaeval"
                 android:textColor="#FFF"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:padding="10dp"

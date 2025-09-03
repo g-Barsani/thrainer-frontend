@@ -43,6 +43,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
+            playVideo()
+
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
@@ -82,5 +84,36 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun playVideo() {
+        // Apply the custom theme here
+        val videoDialog = android.app.Dialog(this@LoginActivity, R.style.FullScreenDialogTheme)
+
+        val videoView = android.widget.VideoView(this@LoginActivity)
+        videoView.layoutParams = android.widget.FrameLayout.LayoutParams(
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        videoDialog.setContentView(videoView)
+
+        // This line is good to keep, though the theme does most of the work
+        videoDialog.window?.setLayout(
+            android.view.WindowManager.LayoutParams.MATCH_PARENT,
+            android.view.WindowManager.LayoutParams.MATCH_PARENT
+        )
+
+        videoDialog.setCancelable(false)
+        videoView.setVideoPath("android.resource://" + packageName + "/" + R.raw.door_animation)
+
+        videoView.setOnCompletionListener {
+            videoDialog.dismiss()
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        videoDialog.show()
+        videoView.start()
     }
 }
