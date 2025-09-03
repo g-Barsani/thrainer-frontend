@@ -15,16 +15,20 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeckScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateCardActivity"
+            android:exported="false" />
+        <activity
             android:name=".FlashcardActivity"
             android:exported="false" />
         <activity
             android:name=".StudyRoom.StudyRoomActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".CommunityActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
@@ -39,11 +43,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
-
-
-
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

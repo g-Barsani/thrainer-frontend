@@ -16,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.goblenstudios.thrainer.CreateCardActivity
 import com.goblenstudios.thrainer.CreateDeckDialogFragment
 import com.goblenstudios.thrainer.FlashcardActivity
 import com.goblenstudios.thrainer.HomeActivity
@@ -96,7 +97,12 @@ class StudyRoomActivity : AppCompatActivity() {
                 layoutParams = LinearLayout.LayoutParams(dp(200), dp(100)).apply {
                     marginEnd = dp(16)
                 }
-                setBackgroundResource(if (index % 2 == 0) android.R.color.black else android.R.color.darker_gray)
+
+                // Setando cores alternadas para os blocos
+//                setBackgroundResource(if (index % 2 == 0) android.R.color.black else android.R.color.darker_gray)
+
+                // Setando imagem para decorar os itens arrastáveis
+                setBackgroundResource(R.drawable.sample2)
             }
 
             val textView = TextView(this).apply {
@@ -105,12 +111,13 @@ class StudyRoomActivity : AppCompatActivity() {
                     FrameLayout.LayoutParams.MATCH_PARENT
                 )
                 text = texto
-                setTextColor(resources.getColor(android.R.color.white, null))
+                setTextColor(resources.getColor(android.R.color.black, null))
                 gravity = android.view.Gravity.CENTER
             }
 
             frameLayout.addView(textView)
 
+            // Evento relacionado ao toque longo para iniciar o arraste
             frameLayout.setOnLongClickListener {
                 val item = ClipData.Item(textView.text)
                 val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
@@ -119,6 +126,25 @@ class StudyRoomActivity : AppCompatActivity() {
                 frameLayout.startDragAndDrop(data, dragShadowBuilder, frameLayout, 0)
                 frameLayout.visibility = View.INVISIBLE
                 true
+            }
+
+            // Evento de clique simples, para perguntar se quer adicionar cards ao deck
+            frameLayout.setOnClickListener {
+                val builder = android.app.AlertDialog.Builder(this)
+                builder.setTitle("Criar feitiços")
+                builder.setMessage("Deseja adicionar cards ao deck ${textView.text}?")
+                builder.setPositiveButton("Sim") { dialog, which ->
+                    Toast.makeText(this, "Você escolheu SIM !!!", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    startActivity(Intent(this, CreateCardActivity::class.java))
+                    overridePendingTransition(0, 0)
+//                    finish()
+
+                }
+                builder.setNegativeButton("Não") { dialog, which ->
+                    dialog.dismiss()
+                }
+                builder.show()
             }
 
             llTop.addView(frameLayout)
