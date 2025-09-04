@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="#000">
 
     <!-- Imagem de fundo -->
     <ImageView
@@ -33,11 +33,12 @@
     <!-- Modal centralizado -->
     <androidx.cardview.widget.CardView
         android:id="@+id/modalContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        android:background="#000"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
-        app:cardBackgroundColor="#FFF"
+        app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintHeight_percent="0.6"
         app:layout_constraintTop_toTopOf="parent"
@@ -45,56 +46,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Conteúdo do modal -->
-        <LinearLayout
+
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="32dp">
+            android:layout_height="match_parent">
 
-            <!-- Título do modal -->
-            <TextView
-                android:id="@+id/title"
+            <!-- ImageView como fundo -->
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Thrainer"
-                android:textSize="24sp"
+                android:layout_height="match_parent"
+                android:src="@drawable/old_scroll"
+                android:scaleType="centerCrop"/>
+
+            <!-- Conteúdo do modal -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginBottom="24dp"/>
+                android:orientation="vertical"
+                android:padding="32dp">
+
+                <!-- Botão 1 -->
+                <Button
+                    android:id="@+id/btnGoToStudyRoom"
+                    android:layout_width="246dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="#0a7ea4"
+                    android:fontFamily="@font/goudymediaeval"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:text="Laboratório do Mago"
+                    android:textColor="#000"
+                    android:textSize="22sp" />
+
+                <!-- Botão 2 -->
+                <Button
+                    android:id="@+id/btnGoToCommunity"
+                    android:layout_width="244dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="#0a7ea4"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:text="Feitiços da Comunidade"
+                    android:textColor="#000"
+                    android:fontFamily="@font/goudymediaeval"
+                    android:textSize="22sp"
+                    />
+            </LinearLayout>
+
+        </FrameLayout>>
 
 
-
-            <!-- Botão 1 -->
-            <Button
-                android:id="@+id/btnGoToStudyRoom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="#0a7ea4"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="Laboratório do Mago"
-                android:textColor="#fff"
-                android:textStyle="bold" />
-
-            <!-- Botão 2 -->
-            <Button
-                android:id="@+id/btnGoToCommunity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="#0a7ea4"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="Feitiços da Comunidade"
-                android:textColor="#fff"
-                android:textStyle="bold" />
-        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <ImageButton
