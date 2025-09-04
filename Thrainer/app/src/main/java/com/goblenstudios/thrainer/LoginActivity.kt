@@ -43,7 +43,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            playVideo()
+
+//            playVideo()
+
+            startActivity(Intent(this@LoginActivity, LoginVideoActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
 
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -86,61 +91,86 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun playVideo() {
-        val videoDialog = android.app.Dialog(this@LoginActivity, R.style.FullScreenDialogTheme)
-        val textureView = android.view.TextureView(this@LoginActivity)
-        textureView.layoutParams = android.widget.FrameLayout.LayoutParams(
-            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-            android.view.ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        videoDialog.setContentView(textureView)
-        videoDialog.window?.setLayout(
-            android.view.WindowManager.LayoutParams.MATCH_PARENT,
-            android.view.WindowManager.LayoutParams.MATCH_PARENT
-        )
-        videoDialog.setCancelable(false)
-
-        textureView.surfaceTextureListener = object : android.view.TextureView.SurfaceTextureListener {
-            var mediaPlayer: android.media.MediaPlayer? = null
-
-            override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
-                mediaPlayer = android.media.MediaPlayer()
-                val afd = resources.openRawResourceFd(R.raw.door_animation)
-                mediaPlayer?.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                afd.close()
-                mediaPlayer?.setSurface(android.view.Surface(surface))
-
-                mediaPlayer?.setOnVideoSizeChangedListener { mp, videoWidth, videoHeight ->
-                    val viewWidth = textureView.width.toFloat()
-                    val viewHeight = textureView.height.toFloat()
-                    val scaleX = viewWidth / videoWidth
-                    val scaleY = viewHeight / videoHeight
-                    val scale = maxOf(scaleX, scaleY)
-                    val matrix = android.graphics.Matrix()
-                    matrix.setScale(scale, scale, viewWidth / 2, viewHeight / 2)
-                    textureView.setTransform(matrix)
-                }
-
-                mediaPlayer?.setOnCompletionListener {
-                    mediaPlayer?.release()
-                    videoDialog.dismiss()
-                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                    overridePendingTransition(0, 0)
-                    finish()
-                }
-
-                mediaPlayer?.setOnPreparedListener { it.start() }
-                mediaPlayer?.prepareAsync()
-            }
-
-            override fun onSurfaceTextureSizeChanged(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {}
-            override fun onSurfaceTextureDestroyed(surface: android.graphics.SurfaceTexture): Boolean {
-                mediaPlayer?.release()
-                return true
-            }
-            override fun onSurfaceTextureUpdated(surface: android.graphics.SurfaceTexture) {}
-        }
-
-        videoDialog.show()
-    }
+//    fun playVideo() {
+//        val videoDialog = android.app.Dialog(this@LoginActivity, R.style.FullScreenDialogTheme)
+//
+//        // Remove decorações da janela e força tela cheia
+//        videoDialog.window?.apply {
+//            decorView.systemUiVisibility = (
+//                    android.view.View.SYSTEM_UI_FLAG_FULLSCREEN or
+//                            android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+//                            android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+//                            android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+//                            android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+//                            android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    )
+//            setFlags(
+//                android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+//            )
+//            setLayout(
+//                android.view.WindowManager.LayoutParams.MATCH_PARENT,
+//                android.view.WindowManager.LayoutParams.MATCH_PARENT
+//            )
+//        }
+//
+//        val frameLayout = android.widget.FrameLayout(this@LoginActivity)
+//        frameLayout.setBackgroundColor(android.graphics.Color.BLACK)
+//
+//        val textureView = android.view.TextureView(this@LoginActivity)
+//        textureView.layoutParams = android.widget.FrameLayout.LayoutParams(
+//            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+//            android.view.ViewGroup.LayoutParams.MATCH_PARENT
+//        )
+//
+//        frameLayout.addView(textureView)
+//        videoDialog.setContentView(frameLayout)
+//        videoDialog.setCancelable(false)
+//
+//        textureView.surfaceTextureListener = object : android.view.TextureView.SurfaceTextureListener {
+//            var mediaPlayer: android.media.MediaPlayer? = null
+//
+//            override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
+//                mediaPlayer = android.media.MediaPlayer()
+//                val afd = resources.openRawResourceFd(R.raw.door_animation)
+//                mediaPlayer?.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+//                afd.close()
+//                mediaPlayer?.setSurface(android.view.Surface(surface))
+//
+//                mediaPlayer?.setOnVideoSizeChangedListener { mp, videoWidth, videoHeight ->
+//                    val viewWidth = width.toFloat()
+//                    val viewHeight = height.toFloat()
+//
+//                    val matrix = android.graphics.Matrix()
+//                    val scaleX = viewWidth / videoWidth
+//                    val scaleY = viewHeight / videoHeight
+//                    val scale = maxOf(scaleX, scaleY)
+//
+//                    // Centraliza e escala para tela cheia
+//                    matrix.setScale(scale, scale, viewWidth / 2, viewHeight / 2)
+//                    textureView.setTransform(matrix)
+//                }
+//
+//                mediaPlayer?.setOnCompletionListener {
+//                    mediaPlayer?.release()
+//                    videoDialog.dismiss()
+//                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+//                    overridePendingTransition(0, 0)
+//                    finish()
+//                }
+//
+//                mediaPlayer?.setOnPreparedListener { it.start() }
+//                mediaPlayer?.prepareAsync()
+//            }
+//
+//            override fun onSurfaceTextureSizeChanged(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {}
+//            override fun onSurfaceTextureDestroyed(surface: android.graphics.SurfaceTexture): Boolean {
+//                mediaPlayer?.release()
+//                return true
+//            }
+//            override fun onSurfaceTextureUpdated(surface: android.graphics.SurfaceTexture) {}
+//        }
+//
+//        videoDialog.show()
+//    }
 }

@@ -15,6 +15,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".LoginVideoActivity"
+            android:exported="false" />
+        <activity
             android:name=".DeckScreenActivity"
             android:exported="false" />
         <activity
