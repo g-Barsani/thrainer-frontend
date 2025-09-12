@@ -35,6 +35,8 @@ class StudyRoomActivity : AppCompatActivity() {
     // Função utilitária para converter dp em px
     fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
+    private var selectedDeckId: Long? = null
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,11 @@ class StudyRoomActivity : AppCompatActivity() {
                     val v = event.localState as View
                     val owner = v.parent as ViewGroup
                     owner.removeView(v)
+
+                    // Guardar o id do deck selecionado ao dropar no caldeirão
+                    if (view.id == R.id.llCauldron) {
+                        selectedDeckId = v.tag as? Long
+                    }
 
                     when (view.id) {
                         R.id.llCauldron -> {
@@ -116,6 +123,7 @@ class StudyRoomActivity : AppCompatActivity() {
             val result = withContext(Dispatchers.IO) { deckRepository.getDecksByUser(userId) }
             if (result.isSuccess) {
                 val decks = result.getOrNull() ?: emptyList<ReturnDeckDto>()
+                val deckMap = decks.associateBy { it.name } // Mapear nome para id
                 if (decks.isEmpty()) {
                     // Exibe mensagem se não houver decks
                     val emptyText = TextView(this@StudyRoomActivity).apply {
@@ -167,6 +175,8 @@ class StudyRoomActivity : AppCompatActivity() {
                             startActivity(intent)
                             overridePendingTransition(0, 0)
                         }
+                        // Guardar o id do deck no tag do frameLayout para uso no drop
+                        frameLayout.tag = deck.idDeck
                         llTop.addView(frameLayout)
                     }
                 }
@@ -200,9 +210,17 @@ class StudyRoomActivity : AppCompatActivity() {
         }
 
         btnRightCenter.setOnClickListener {
-            startActivity(Intent(this, FlashcardActivity::class.java))
-            overridePendingTransition(0, 0)
-            finish()
+            // Só abrir se houver deck selecionado
+            val deckId = selectedDeckId
+            if (deckId != null) {
+                val intent = Intent(this, FlashcardActivity::class.java)
+                intent.putExtra("deckId", deckId)
+                startActivity(intent)
+                overridePendingTransition(0, 0)
+                finish()
+            } else {
+                Toast.makeText(this, "Selecione um deck para estudar!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnCloseOverlay.setOnClickListener {

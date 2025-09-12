@@ -19,8 +19,11 @@ interface UserCardService {
     @PUT("user-cards")
     suspend fun updateUserCard( @Body dto: UpdateUserCardDto): ReturnUserCardDto
 
-    @GET("user-cards/{cardId}")
-    suspend fun getBestUsersByCard( @Body cardId: Long): ReturnUserCardDto
+    @GET("user-cards/best-users/{cardId}")
+    suspend fun getBestUsersByCard(
+        @Path("cardId") cardId: Long,
+        @Query("limit") limit: Int = 10
+    ): List<ReturnUserCardDto>
 
     @GET("user-cards/user/{userId}/deck/{deckId}")
     suspend fun getUserCardsByUserAndDeck( @Path("userId") userId: Long, @Path("deckId") deckId: Long): List<ReturnUserCardDto>
@@ -29,10 +32,10 @@ interface UserCardService {
     suspend fun getUserCardsByUser( @Path("userId") userId: Long): List<ReturnUserCardDto>
 
     @POST("user-cards/{userId}/correct/{cardId}")
-    suspend fun markCardAsCorrect( @Path("userId") userId: Long, @Path("cardId") cardId: Long): ReturnUserCardDto
+    suspend fun markCardAsCorrect(@Path("userId") userId: Long, @Path("cardId") cardId: Long): ReturnUserCardDto
 
     @POST("user-cards/{userId}/wrong/{cardId}")
-    suspend fun markCardAsWrong( @Path("userId") userId: Long, @Path("cardId") cardId: Long): ReturnUserCardDto
+    suspend fun markCardAsWrong(@Path("userId") userId: Long, @Path("cardId") cardId: Long): ReturnUserCardDto
 
     @GET("user-cards/practice")
     suspend fun practiceCardsByDeck(

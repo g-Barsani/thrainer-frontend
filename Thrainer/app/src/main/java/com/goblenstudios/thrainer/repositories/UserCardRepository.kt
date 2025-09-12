@@ -26,7 +26,7 @@ class UserCardRepository(val userCardService: UserCardService) {
         }
     }
 
-    suspend fun getBestUsersByCard(cardId: Long): Result<ReturnUserCardDto> {
+    suspend fun getBestUsersByCard(cardId: Long): Result<List<ReturnUserCardDto>> {
         return try {
             val response = userCardService.getBestUsersByCard(cardId)
             Result.success(response)
@@ -55,18 +55,26 @@ class UserCardRepository(val userCardService: UserCardService) {
 
     suspend fun markCardAsCorrect(userId: Long, cardId: Long): Result<ReturnUserCardDto> {
         return try {
+            println("UserCardRepository: Iniciando markCardAsCorrect - userId: $userId, cardId: $cardId")
             val response = userCardService.markCardAsCorrect(userId, cardId)
+            println("UserCardRepository: markCardAsCorrect bem-sucedido")
             Result.success(response)
         } catch (e: Exception) {
+            println("UserCardRepository: Erro em markCardAsCorrect - ${e.javaClass.simpleName}: ${e.message}")
+            e.printStackTrace()
             Result.failure(e)
         }
     }
 
     suspend fun markCardAsWrong(userId: Long, cardId: Long): Result<ReturnUserCardDto> {
         return try {
+            println("UserCardRepository: Iniciando markCardAsWrong - userId: $userId, cardId: $cardId")
             val response = userCardService.markCardAsWrong(userId, cardId)
+            println("UserCardRepository: markCardAsWrong bem-sucedido")
             Result.success(response)
         } catch (e: Exception) {
+            println("UserCardRepository: Erro em markCardAsWrong - ${e.javaClass.simpleName}: ${e.message}")
+            e.printStackTrace()
             Result.failure(e)
         }
     }

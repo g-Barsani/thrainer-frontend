@@ -1,6 +1,7 @@
 <!-- app/src/main/res/layout/activity_flashcard.xml -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,34 +43,43 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"/>
 
-    <!-- Botão próximo -->
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="0dp"
+    <!-- LinearLayout para botões de feedback -->
+    <LinearLayout
+        android:id="@+id/llFeedbackButtons"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Próximo"
-        app:layout_constraintTop_toBottomOf="@id/btnShowAnswer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
-
-    <!-- TextView para resposta (inicialmente invisível) -->
-    <TextView
-        android:id="@+id/tvAnswer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Resposta do Flashcard"
-        android:textSize="18sp"
-        android:textColor="#4d7a46"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/cardFlashcard"
+        android:layout_marginBottom="32dp"
+        android:layout_gravity="bottom"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnAcertou"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Acertou"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#4CAF50"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnErrou"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Errou"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#F44336"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
