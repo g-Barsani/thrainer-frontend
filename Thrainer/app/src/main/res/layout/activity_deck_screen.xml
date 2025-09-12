@@ -19,47 +19,40 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/tvTitleList"
+        android:id="@+id/tvDeckName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Meus Feitiços"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:text="Deck"
         android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recyclerViewDecks"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginTop="24dp"/>
 
     <!-- Títulos das colunas -->
+
     <LinearLayout
         android:id="@+id/llTitulosColunas"
-        android:layout_width="360dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvTitleList"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="0dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="81dp" />
 
     <!--    Espaço da lista -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDecks"
-        android:layout_width="360dp"
-        android:layout_height="354dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="180dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@id/btnReturnToHome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/tvDeckName" />
 
     <Button
         android:id="@+id/btnReturnToHome"
