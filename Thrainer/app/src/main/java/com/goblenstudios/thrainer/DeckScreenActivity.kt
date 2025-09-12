@@ -1,5 +1,6 @@
 package com.goblenstudios.thrainer
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -88,6 +89,14 @@ class DeckScreenActivity : AppCompatActivity() {
         val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)
         btnReturnToHome.setOnClickListener {
             finish()
+        }
+
+        val btnCreateCard = findViewById<Button>(R.id.btnCreateCard)
+        btnCreateCard.setOnClickListener {
+            val deckId = intent.getLongExtra("deckId", 0L)
+            val intent = Intent(this, CreateCardActivity::class.java)
+            intent.putExtra("deckId", deckId)
+            startActivity(intent)
         }
     }
 }
