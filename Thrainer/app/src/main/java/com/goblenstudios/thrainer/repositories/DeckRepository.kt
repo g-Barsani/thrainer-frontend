@@ -33,6 +33,15 @@ class DeckRepository(private val deckService: DeckService) {
         }
     }
 
+    suspend fun getDecksByUser(userId: Long): Result<List<ReturnDeckDto>> {
+        return try {
+            val response = deckService.getDecksByUser(userId)
+            Result.success(response)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun createDeck(dto: CreateDeckDto): Result<ReturnDeckDto> {
         return try {
             val response = deckService.createDeck(dto)

@@ -13,46 +13,40 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.goblenstudios.thrainer.repositories.DeckRepository
-import com.goblenstudios.thrainer.dtos.ReturnDeckDto
-import com.goblenstudios.thrainer.services.DeckService
+import com.goblenstudios.thrainer.repositories.CardRepository
+import com.goblenstudios.thrainer.dtos.ReturnCardDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DeckScreenActivity : AppCompatActivity() {
-    // Classe de dados para o deck (sem autor)
-    data class Deck(val deckName: String, val numberOfCards: String, val numberOfDownloads: String)
+    // Adapter para exibir cartas
+    class CardAdapter(private val cards: List<ReturnCardDto>) :
+        RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
 
-    // Adapter interno para o RecyclerView
-    class DeckAdapter(private val decks: List<Deck>) :
-        RecyclerView.Adapter<DeckAdapter.DeckViewHolder>() {
-
-        class DeckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val tvDeckName: TextView = itemView.findViewById(R.id.tvDeckName)
-            val tvNumberOfCards: TextView = itemView.findViewById(R.id.tvNumberOfCards)
-            val tvNumberOfDownloads: TextView = itemView.findViewById(R.id.tvNumberOfDownloads)
+        class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val tvQuestion: TextView = itemView.findViewById(R.id.tvQuestion)
+            val tvAnswer: TextView = itemView.findViewById(R.id.tvAnswer)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeckViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_deck_screen, parent, false)
-            return DeckViewHolder(view)
+            return CardViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: DeckViewHolder, position: Int) {
-            val deck = decks[position]
-            holder.tvDeckName.text = deck.deckName
-            holder.tvNumberOfCards.text = deck.numberOfCards
-            holder.tvNumberOfDownloads.text = deck.numberOfDownloads
+        override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+            val card = cards[position]
+            holder.tvQuestion.text = card.question
+            holder.tvAnswer.text = card.answer
         }
 
-        override fun getItemCount() = decks.size
+        override fun getItemCount() = cards.size
     }
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: DeckAdapter
-//    private val deckRepository = DeckRepository(DeckService())
+    private lateinit var adapter: CardAdapter
+//    private val cardRepository = CardRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,21 +56,21 @@ class DeckScreenActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewDecks)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // Exemplo: obter deckId de algum lugar (intent, etc)
+        val deckId = intent.getLongExtra("deckId", 0L)
+        if (deckId == 0L) {
+            Toast.makeText(this, "Deck não informado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
 //        lifecycleScope.launch {
-//            val result = withContext(Dispatchers.IO) { deckRepository.getAllPublicDecks() } // Substitua por getUserDecks() se existir
+//            val result = withContext(Dispatchers.IO) { cardRepository.getCardsByDeck(deckId) }
 //            if (result.isSuccess) {
-//                val decksApi = result.getOrNull() ?: emptyList<com.goblenstudios.thrainer.dtos.ReturnDeckDto>()
-//                val decks = decksApi.map {
-//                    Deck(
-//                        deckName = it.name ?: "",
-//                        numberOfCards = it.cards?.size?.toString() ?: "0",
-//                        numberOfDownloads = it.downloads?.toString() ?: "0"
-//                    )
-//                }
-//                adapter = DeckAdapter(decks)
+//                val cards = result.getOrNull() ?: emptyList<ReturnCardDto>()
+//                adapter = CardAdapter(cards)
 //                recyclerView.adapter = adapter
 //            } else {
-//                Toast.makeText(this@DeckScreenActivity, "Erro ao carregar decks", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@DeckScreenActivity, "Erro ao carregar cartas", Toast.LENGTH_SHORT).show()
 //            }
 //        }
     }
