@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -21,6 +22,7 @@ import com.goblenstudios.thrainer.CreateDeckDialogFragment
 import com.goblenstudios.thrainer.FlashcardActivity
 import com.goblenstudios.thrainer.HomeActivity
 import com.goblenstudios.thrainer.R
+import com.bumptech.glide.Glide
 
 class StudyRoomActivity : AppCompatActivity() {
     // Função utilitária para converter dp em px
@@ -31,6 +33,16 @@ class StudyRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_study_room)
+
+        // Aplica fade in na activity
+        overridePendingTransition(R.drawable.fade_in, R.drawable.fade_out)
+
+        val backgroundImage = findViewById<ImageView>(R.id.backgroundImage)
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.study_room_animated) // seu arquivo GIF
+            .into(backgroundImage)
+
 
         val tvDeckName = findViewById<TextView>(R.id.tvDeckName)
         val llTop = findViewById<LinearLayout>(R.id.llTop)  // De onde o objeto view pode ser arrastado
