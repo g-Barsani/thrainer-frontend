@@ -5,81 +5,82 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@drawable/practice_screen_animated">
 
     <!-- Card do flashcard -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardFlashcard"
-        android:layout_width="0dp"
-        android:layout_height="220dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnShowAnswer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="32dp">
-
-        <TextView
-            android:id="@+id/tvQuestion"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Pergunta do Flashcard"
-            android:textSize="22sp"
-            android:textColor="#333"
-            android:gravity="center"/>
-    </androidx.cardview.widget.CardView>
 
     <!-- Botão para mostrar resposta -->
+
+    <!-- Botão próximo -->
+
+    <!-- TextView para resposta (inicialmente invisível) -->
+
+    <!-- ImageView que muda dependendo do estado (pergunta/resposta) -->
+
     <Button
-        android:id="@+id/btnShowAnswer"
+        android:id="@+id/btnErrou"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Mostrar resposta"
-        app:layout_constraintTop_toBottomOf="@id/cardFlashcard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
-
-    <!-- LinearLayout para botões de feedback -->
-    <LinearLayout
-        android:id="@+id/llFeedbackButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="32dp"
-        android:layout_gravity="bottom"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="560dp"
+        android:layout_marginEnd="32dp"
+        android:text="Errou"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btnAcertou"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Acertou"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#4CAF50"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginEnd="8dp"/>
 
-        <Button
-            android:id="@+id/btnErrou"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Errou"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#F44336"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/btnAcertou"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Próximo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnErrou" />
+
+    <TextView
+        android:id="@+id/tvAnswer"
+        android:layout_width="232dp"
+        android:layout_height="245dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="128dp"
+        android:elevation="8dp"
+        android:gravity="center"
+        android:text="Resposta do Flashcard"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/question_balloon" />
+
+    <TextView
+        android:id="@+id/tvFlashcardQuestion"
+        android:layout_width="177dp"
+        android:layout_height="224dp"
+        android:text="blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.735"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.28" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

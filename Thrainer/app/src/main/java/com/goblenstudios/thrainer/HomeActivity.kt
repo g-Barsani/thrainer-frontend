@@ -24,6 +24,9 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
+        // Aplica fade in na activity
+        overridePendingTransition(R.drawable.fade_in, R.drawable.fade_out)
+
         // Botão para direcionar para StudyRoomActivity
         val btnGoToStudyRoom = findViewById<Button>(R.id.btnGoToStudyRoom)
         btnGoToStudyRoom.setOnClickListener {

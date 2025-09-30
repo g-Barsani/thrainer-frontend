@@ -65,6 +65,9 @@ class CommunityActivity : AppCompatActivity() {
             insets
         }
 
+        // Aplica fade in na activity
+        overridePendingTransition(R.drawable.fade_in, R.drawable.fade_out)
+
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewDecks)
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         recyclerView.addItemDecoration(
