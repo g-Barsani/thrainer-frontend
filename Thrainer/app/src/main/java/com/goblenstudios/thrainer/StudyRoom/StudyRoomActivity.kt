@@ -17,16 +17,27 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.goblenstudios.thrainer.CommunityActivity
 import com.goblenstudios.thrainer.CreateCardActivity
 import com.goblenstudios.thrainer.CreateDeckDialogFragment
+import com.goblenstudios.thrainer.DeckScreenActivity
 import com.goblenstudios.thrainer.FlashcardActivity
 import com.goblenstudios.thrainer.HomeActivity
 import com.goblenstudios.thrainer.R
+import com.goblenstudios.thrainer.repositories.DeckRepository
+import com.goblenstudios.thrainer.dtos.ReturnDeckDto
+import com.goblenstudios.thrainer.services.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.bumptech.glide.Glide
 
 class StudyRoomActivity : AppCompatActivity() {
     // Função utilitária para converter dp em px
     fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
+
+    private var selectedDeckId: Long? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +58,10 @@ class StudyRoomActivity : AppCompatActivity() {
         val tvDeckName = findViewById<TextView>(R.id.tvDeckName)
         val llTop = findViewById<LinearLayout>(R.id.llTop)  // De onde o objeto view pode ser arrastado
         val llCauldron = findViewById<LinearLayout>(R.id.llCauldron)  // Destino onde o objeto view pode ser solto
-        val itens = listOf("Arrasta 1", "Arrasta 2", "Arrasta 3", "Arrasta 4", "Arrasta 5")
+//        val itens = listOf("Arrasta 1", "Arrasta 2", "Arrasta 3", "Arrasta 4", "Arrasta 5")
+
+        val deckRepository = DeckRepository(RetrofitInstance.deckService)
+
         val dragListener = View.OnDragListener { view, event ->
             when (event.action) {
                 DragEvent.ACTION_DRAG_STARTED -> event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
@@ -63,6 +77,11 @@ class StudyRoomActivity : AppCompatActivity() {
                     val v = event.localState as View
                     val owner = v.parent as ViewGroup
                     owner.removeView(v)
+
+                    // Guardar o id do deck selecionado ao dropar no caldeirão
+                    if (view.id == R.id.llCauldron) {
+                        selectedDeckId = v.tag as? Long
+                    }
 
                     when (view.id) {
                         R.id.llCauldron -> {
@@ -103,63 +122,86 @@ class StudyRoomActivity : AppCompatActivity() {
         llTop.setOnDragListener(dragListener)
         llCauldron.setOnDragListener(dragListener)
 
-        // Cria dinamicamente os blocos arrastáveis
-        for ((index, texto) in itens.withIndex()) {
-            val frameLayout = FrameLayout(this).apply {
-                layoutParams = LinearLayout.LayoutParams(dp(200), dp(100)).apply {
-                    marginEnd = dp(16)
+        // Buscar decks reais do usuário nas SharedPreferences
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = prefs.getLong("user_id", -1L)
+        if (userId == -1L) {
+            Toast.makeText(this, "Usuário não encontrado.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Buscar decks do usuário de forma assíncrona
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = withContext(Dispatchers.IO) { deckRepository.getDecksByUser(userId) }
+            if (result.isSuccess) {
+                val decks = result.getOrNull() ?: emptyList<ReturnDeckDto>()
+                val deckMap = decks.associateBy { it.name } // Mapear nome para id
+                if (decks.isEmpty()) {
+                    // Exibe mensagem se não houver decks
+                    val emptyText = TextView(this@StudyRoomActivity).apply {
+                        text = "Nenhum deck encontrado."
+                        setTextColor(resources.getColor(android.R.color.white, null))
+                        textSize = 16f
+                        gravity = android.view.Gravity.CENTER
+                    }
+                    llTop.addView(emptyText)
+                } else {
+                    // Para cada deck, cria um bloco arrastável
+                    for ((index, deck) in decks.withIndex()) {
+                        val frameLayout = FrameLayout(this@StudyRoomActivity).apply {
+                            layoutParams = LinearLayout.LayoutParams(dp(200), dp(100)).apply {
+                                marginEnd = dp(16)
+                                topMargin = dp(8)
+                            }
+                            // Imagem de fundo do bloco
+                            setBackgroundResource(R.drawable.sample2)
+                        }
+                        val textView = TextView(this@StudyRoomActivity).apply {
+                            layoutParams = FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.MATCH_PARENT,
+                                FrameLayout.LayoutParams.MATCH_PARENT
+                            )
+                            text = deck.name
+                            setTextColor(resources.getColor(android.R.color.black, null))
+                            gravity = android.view.Gravity.CENTER
+                        }
+                        frameLayout.addView(textView)
+                        // Evento de toque longo para iniciar o arraste do deck
+                        frameLayout.setOnLongClickListener { v ->
+                            val item = ClipData.Item(deck.name)
+                            val dragData = ClipData(
+                                deck.name,
+                                arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
+                                item
+                            )
+                            val shadow = View.DragShadowBuilder(v)
+                            v.visibility = View.INVISIBLE
+                            v.startDragAndDrop(dragData, shadow, v, 0)
+                            true
+                        }
+                        // Evento de clique simples para abrir a tela do deck
+                        frameLayout.setOnClickListener {
+                            val intent = Intent(this@StudyRoomActivity, DeckScreenActivity::class.java)
+                            intent.putExtra("deckId", deck.idDeck)
+                            intent.putExtra("deckName", deck.name)
+                            startActivity(intent)
+                            overridePendingTransition(0, 0)
+                        }
+                        // Guardar o id do deck no tag do frameLayout para uso no drop
+                        frameLayout.tag = deck.idDeck
+                        llTop.addView(frameLayout)
+                    }
                 }
-
-                // Setando cores alternadas para os blocos
-//                setBackgroundResource(if (index % 2 == 0) android.R.color.black else android.R.color.darker_gray)
-
-                // Setando imagem para decorar os itens arrastáveis
-                setBackgroundResource(R.drawable.sample2)
-            }
-
-            val textView = TextView(this).apply {
-                layoutParams = FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT
-                )
-                text = texto
-                setTextColor(resources.getColor(android.R.color.black, null))
-                gravity = android.view.Gravity.CENTER
-            }
-
-            frameLayout.addView(textView)
-
-            // Evento relacionado ao toque longo para iniciar o arraste
-            frameLayout.setOnLongClickListener {
-                val item = ClipData.Item(textView.text)
-                val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
-                val data = ClipData(textView.text, mimeTypes, item)
-                val dragShadowBuilder = View.DragShadowBuilder(frameLayout)
-                frameLayout.startDragAndDrop(data, dragShadowBuilder, frameLayout, 0)
-                frameLayout.visibility = View.INVISIBLE
-                true
-            }
-
-            // Evento de clique simples, para perguntar se quer adicionar cards ao deck
-            frameLayout.setOnClickListener {
-                val builder = android.app.AlertDialog.Builder(this)
-                builder.setTitle("Criar feitiços")
-                builder.setMessage("Deseja adicionar cards ao deck ${textView.text}?")
-                builder.setPositiveButton("Sim") { dialog, which ->
-                    Toast.makeText(this, "Você escolheu SIM !!!", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
-                    startActivity(Intent(this, CreateCardActivity::class.java))
-                    overridePendingTransition(0, 0)
-//                    finish()
-
+            } else {
+                // Exibe mensagem de erro se falhar ao buscar decks
+                val errorText = TextView(this@StudyRoomActivity).apply {
+                    text = "Erro ao carregar decks."
+                    setTextColor(resources.getColor(android.R.color.white, null))
+                    textSize = 16f
+                    gravity = android.view.Gravity.CENTER
                 }
-                builder.setNegativeButton("Não") { dialog, which ->
-                    dialog.dismiss()
-                }
-                builder.show()
+                llTop.addView(errorText)
             }
-
-            llTop.addView(frameLayout)
         }
 
 
@@ -180,9 +222,17 @@ class StudyRoomActivity : AppCompatActivity() {
         }
 
         btnRightCenter.setOnClickListener {
-            startActivity(Intent(this, FlashcardActivity::class.java))
-            overridePendingTransition(0, 0)
-            finish()
+            // Só abrir se houver deck selecionado
+            val deckId = selectedDeckId
+            if (deckId != null) {
+                val intent = Intent(this, FlashcardActivity::class.java)
+                intent.putExtra("deckId", deckId)
+                startActivity(intent)
+                overridePendingTransition(0, 0)
+                finish()
+            } else {
+                Toast.makeText(this, "Selecione um deck para estudar!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnCloseOverlay.setOnClickListener {
