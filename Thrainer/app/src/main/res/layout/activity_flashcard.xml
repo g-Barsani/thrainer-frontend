@@ -10,53 +10,64 @@
     <!-- Card do flashcard -->
 
     <!-- Botão para mostrar resposta -->
+
+    <!-- Botão próximo -->
+
+    <!-- TextView para resposta (inicialmente invisível) -->
+
+    <!-- ImageView que muda dependendo do estado (pergunta/resposta) -->
+
     <Button
         android:id="@+id/btnShowAnswer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="560dp"
         android:layout_marginEnd="32dp"
         android:text="Mostrar resposta"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="276dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botão próximo -->
     <Button
         android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Próximo"
-        app:layout_constraintTop_toBottomOf="@id/btnShowAnswer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Próximo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnShowAnswer" />
 
-    <!-- TextView para resposta (inicialmente invisível) -->
     <TextView
         android:id="@+id/tvAnswer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="232dp"
+        android:layout_height="245dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginTop="128dp"
+        android:elevation="8dp"
         android:gravity="center"
         android:text="Resposta do Flashcard"
-        android:textColor="#4d7a46"
+        android:textColor="#ffffff"
         android:textSize="18sp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/question_balloon"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/question_balloon" />
 
     <TextView
         android:id="@+id/tvFlashcardQuestion"
@@ -65,9 +76,9 @@
         android:text="blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.743"
+        app:layout_constraintHorizontal_bias="0.735"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.197" />
+        app:layout_constraintVertical_bias="0.28" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
