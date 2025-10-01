@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -30,12 +31,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.bumptech.glide.Glide
 
 class StudyRoomActivity : AppCompatActivity() {
     // Função utilitária para converter dp em px
     fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
     private var selectedDeckId: Long? = null
+    private val deckRepository = DeckRepository(RetrofitInstance.deckService)
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,9 +52,7 @@ class StudyRoomActivity : AppCompatActivity() {
         val tvDeckName = findViewById<TextView>(R.id.tvDeckName)
         val llTop = findViewById<LinearLayout>(R.id.llTop)  // De onde o objeto view pode ser arrastado
         val llCauldron = findViewById<LinearLayout>(R.id.llCauldron)  // Destino onde o objeto view pode ser solto
-
-        val deckRepository = DeckRepository(RetrofitInstance.deckService)
-
+        val itens = listOf("Arrasta 1", "Arrasta 2", "Arrasta 3", "Arrasta 4", "Arrasta 5")
         val dragListener = View.OnDragListener { view, event ->
             when (event.action) {
                 DragEvent.ACTION_DRAG_STARTED -> event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
@@ -192,6 +193,87 @@ class StudyRoomActivity : AppCompatActivity() {
                 }
                 llTop.addView(errorText)
             }
+        // Buscar decks reais do usuário nas SharedPreferences
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val userId = prefs.getLong("user_id", -1L)
+        if (userId == -1L) {
+//            Toast.makeText(this, "Usuário não encontrado.", Toast.LENGTH_SHORT).show()
+
+//            return
+        }
+
+        // Buscar decks do usuário de forma assíncrona
+        CoroutineScope(Dispatchers.Main).launch {
+            val result = withContext(Dispatchers.IO) { deckRepository.getDecksByUser(userId) }
+            if (result.isSuccess) {
+                val decks = result.getOrNull() ?: emptyList<ReturnDeckDto>()
+                val deckMap = decks.associateBy { it.name } // Mapear nome para id
+                if (decks.isEmpty()) {
+                    // Exibe mensagem se não houver decks
+                    val emptyText = TextView(this@StudyRoomActivity).apply {
+                        text = "Nenhum deck encontrado."
+                        setTextColor(resources.getColor(android.R.color.white, null))
+                        textSize = 16f
+                        gravity = android.view.Gravity.CENTER
+                    }
+                    llTop.addView(emptyText)
+                } else {
+                    // Para cada deck, cria um bloco arrastável
+                    for ((index, deck) in decks.withIndex()) {
+                        val frameLayout = FrameLayout(this@StudyRoomActivity).apply {
+                            layoutParams = LinearLayout.LayoutParams(dp(200), dp(100)).apply {
+                                marginEnd = dp(16)
+                                topMargin = dp(8)
+                            }
+                            // Imagem de fundo do bloco
+                            setBackgroundResource(R.drawable.sample2)
+                        }
+                        val textView = TextView(this@StudyRoomActivity).apply {
+                            layoutParams = FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.MATCH_PARENT,
+                                FrameLayout.LayoutParams.MATCH_PARENT
+                            )
+                            text = deck.name
+                            setTextColor(resources.getColor(android.R.color.black, null))
+                            gravity = android.view.Gravity.CENTER
+                        }
+                        frameLayout.addView(textView)
+                        // Evento de toque longo para iniciar o arraste do deck
+                        frameLayout.setOnLongClickListener { v ->
+                            val item = ClipData.Item(deck.name)
+                            val dragData = ClipData(
+                                deck.name,
+                                arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
+                                item
+                            )
+                            val shadow = View.DragShadowBuilder(v)
+                            v.visibility = View.INVISIBLE
+                            v.startDragAndDrop(dragData, shadow, v, 0)
+                            true
+                        }
+                        // Evento de clique simples para abrir a tela do deck
+                        frameLayout.setOnClickListener {
+                            val intent = Intent(this@StudyRoomActivity, DeckScreenActivity::class.java)
+                            intent.putExtra("deckId", deck.idDeck)
+                            intent.putExtra("deckName", deck.name)
+                            startActivity(intent)
+                            overridePendingTransition(0, 0)
+                        }
+                        // Guardar o id do deck no tag do frameLayout para uso no drop
+                        frameLayout.tag = deck.idDeck
+                        llTop.addView(frameLayout)
+                    }
+                }
+            } else {
+                // Exibe mensagem de erro se falhar ao buscar decks
+                val errorText = TextView(this@StudyRoomActivity).apply {
+                    text = "Erro ao carregar decks."
+                    setTextColor(resources.getColor(android.R.color.white, null))
+                    textSize = 16f
+                    gravity = android.view.Gravity.CENTER
+                }
+                llTop.addView(errorText)
+            }
         }
 
 
@@ -212,17 +294,9 @@ class StudyRoomActivity : AppCompatActivity() {
         }
 
         btnRightCenter.setOnClickListener {
-            // Só abrir se houver deck selecionado
-            val deckId = selectedDeckId
-            if (deckId != null) {
-                val intent = Intent(this, FlashcardActivity::class.java)
-                intent.putExtra("deckId", deckId)
-                startActivity(intent)
-                overridePendingTransition(0, 0)
-                finish()
-            } else {
-                Toast.makeText(this, "Selecione um deck para estudar!", Toast.LENGTH_SHORT).show()
-            }
+            startActivity(Intent(this, FlashcardActivity::class.java))
+            overridePendingTransition(0, 0)
+            finish()
         }
 
         btnCloseOverlay.setOnClickListener {

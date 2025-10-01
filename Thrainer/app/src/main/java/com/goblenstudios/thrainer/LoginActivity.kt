@@ -43,23 +43,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-
-//            playVideo()
-
-            startActivity(Intent(this@LoginActivity, LoginVideoActivity::class.java))
-            overridePendingTransition(0, 0)
-            finish()
-
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
-            // Coroutine serve para executar o login de forma assíncrona, sem travar a interface do app
-
             CoroutineScope(Dispatchers.Main).launch {
-
                 val result = authRepository.login(email, password)
                 if (result.isSuccess) {
-
                     //Armazena o token de autenticação nas SharedPreferences
                     val response = result.getOrNull()
                     val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
@@ -79,10 +68,10 @@ class LoginActivity : AppCompatActivity() {
                     println("Email: ${response?.user?.email}")
                     println("Público: ${response?.user?.isPublic}")
 
-                    // Login bem-sucedido, navega para HomeActivity
-//                    startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-//                    overridePendingTransition(0, 0)
-//                    finish()
+                    // Agora sim, toca o vídeo e navega para a próxima tela
+                    startActivity(Intent(this@LoginActivity, LoginVideoActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
                 } else {
                     // Erro no login
                     Toast.makeText(this@LoginActivity, "Login falhou: ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
