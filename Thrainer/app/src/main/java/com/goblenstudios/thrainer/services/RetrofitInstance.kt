@@ -3,7 +3,7 @@ package com.goblenstudios.thrainer.services
 object RetrofitInstance {
     private val retrofit by lazy {
         retrofit2.Retrofit.Builder()
-            .baseUrl("http://192.168.1.175:8080/api/")
+            .baseUrl("http://192.168.1.125:8080/api/")
             .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
             .build()
     }

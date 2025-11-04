@@ -45,20 +45,33 @@ class StudyRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_study_room)
-
-        // Aplica fade in na activity
         overridePendingTransition(R.drawable.fade_in, R.drawable.fade_out)
 
+        // Carregar GIF animado no background
+        val backgroundImage = findViewById<ImageView>(R.id.backgroundImage)
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.study_room_animated)
+            .into(backgroundImage)
+
         val tvDeckName = findViewById<TextView>(R.id.tvDeckName)
-        val llTop = findViewById<LinearLayout>(R.id.llTop)  // De onde o objeto view pode ser arrastado
-        val llCauldron = findViewById<LinearLayout>(R.id.llCauldron)  // Destino onde o objeto view pode ser solto
-        val itens = listOf("Arrasta 1", "Arrasta 2", "Arrasta 3", "Arrasta 4", "Arrasta 5")
+        val llTop =
+            findViewById<LinearLayout>(R.id.llTop)  // De onde o objeto view pode ser arrastado
+        val llCauldron =
+            findViewById<LinearLayout>(R.id.llCauldron)  // Destino onde o objeto view pode ser solto
+//        val itens = listOf("Arrasta 1", "Arrasta 2", "Arrasta 3", "Arrasta 4", "Arrasta 5")
         val dragListener = View.OnDragListener { view, event ->
             when (event.action) {
                 DragEvent.ACTION_DRAG_STARTED -> event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
-                DragEvent.ACTION_DRAG_ENTERED -> { view.invalidate(); true }
+                DragEvent.ACTION_DRAG_ENTERED -> {
+                    view.invalidate(); true
+                }
+
                 DragEvent.ACTION_DRAG_LOCATION -> true
-                DragEvent.ACTION_DRAG_EXITED -> { view.invalidate(); true }
+                DragEvent.ACTION_DRAG_EXITED -> {
+                    view.invalidate(); true
+                }
+
                 DragEvent.ACTION_DROP -> {
                     val item = event.clipData.getItemAt(0)
                     val dragData = item.text
@@ -87,11 +100,13 @@ class StudyRoomActivity : AppCompatActivity() {
                                 }
                                 .start()
                         }
+
                         R.id.llTop -> {
                             // Não faz nada, impede reorder
                             owner.addView(v) // Retorna para o local original
                             v.visibility = View.VISIBLE
                         }
+
                         else -> {
                             val destination = view as LinearLayout
                             destination.addView(v)
@@ -100,12 +115,14 @@ class StudyRoomActivity : AppCompatActivity() {
                     }
                     true
                 }
+
                 DragEvent.ACTION_DRAG_ENDED -> {
                     view.invalidate()
                     val draggedView = event.localState as? View
                     draggedView?.visibility = View.VISIBLE
                     true
                 }
+
                 else -> false
             }
         }
@@ -172,7 +189,8 @@ class StudyRoomActivity : AppCompatActivity() {
                         }
                         // Evento de clique simples para abrir a tela do deck
                         frameLayout.setOnClickListener {
-                            val intent = Intent(this@StudyRoomActivity, DeckScreenActivity::class.java)
+                            val intent =
+                                Intent(this@StudyRoomActivity, DeckScreenActivity::class.java)
                             intent.putExtra("deckId", deck.idDeck)
                             intent.putExtra("deckName", deck.name)
                             startActivity(intent)
@@ -193,128 +211,56 @@ class StudyRoomActivity : AppCompatActivity() {
                 }
                 llTop.addView(errorText)
             }
-        // Buscar decks reais do usuário nas SharedPreferences
-        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        val userId = prefs.getLong("user_id", -1L)
-        if (userId == -1L) {
-//            Toast.makeText(this, "Usuário não encontrado.", Toast.LENGTH_SHORT).show()
 
-//            return
-        }
 
-        // Buscar decks do usuário de forma assíncrona
-        CoroutineScope(Dispatchers.Main).launch {
-            val result = withContext(Dispatchers.IO) { deckRepository.getDecksByUser(userId) }
-            if (result.isSuccess) {
-                val decks = result.getOrNull() ?: emptyList<ReturnDeckDto>()
-                val deckMap = decks.associateBy { it.name } // Mapear nome para id
-                if (decks.isEmpty()) {
-                    // Exibe mensagem se não houver decks
-                    val emptyText = TextView(this@StudyRoomActivity).apply {
-                        text = "Nenhum deck encontrado."
-                        setTextColor(resources.getColor(android.R.color.white, null))
-                        textSize = 16f
-                        gravity = android.view.Gravity.CENTER
-                    }
-                    llTop.addView(emptyText)
-                } else {
-                    // Para cada deck, cria um bloco arrastável
-                    for ((index, deck) in decks.withIndex()) {
-                        val frameLayout = FrameLayout(this@StudyRoomActivity).apply {
-                            layoutParams = LinearLayout.LayoutParams(dp(200), dp(100)).apply {
-                                marginEnd = dp(16)
-                                topMargin = dp(8)
-                            }
-                            // Imagem de fundo do bloco
-                            setBackgroundResource(R.drawable.sample2)
-                        }
-                        val textView = TextView(this@StudyRoomActivity).apply {
-                            layoutParams = FrameLayout.LayoutParams(
-                                FrameLayout.LayoutParams.MATCH_PARENT,
-                                FrameLayout.LayoutParams.MATCH_PARENT
-                            )
-                            text = deck.name
-                            setTextColor(resources.getColor(android.R.color.black, null))
-                            gravity = android.view.Gravity.CENTER
-                        }
-                        frameLayout.addView(textView)
-                        // Evento de toque longo para iniciar o arraste do deck
-                        frameLayout.setOnLongClickListener { v ->
-                            val item = ClipData.Item(deck.name)
-                            val dragData = ClipData(
-                                deck.name,
-                                arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-                                item
-                            )
-                            val shadow = View.DragShadowBuilder(v)
-                            v.visibility = View.INVISIBLE
-                            v.startDragAndDrop(dragData, shadow, v, 0)
-                            true
-                        }
-                        // Evento de clique simples para abrir a tela do deck
-                        frameLayout.setOnClickListener {
-                            val intent = Intent(this@StudyRoomActivity, DeckScreenActivity::class.java)
-                            intent.putExtra("deckId", deck.idDeck)
-                            intent.putExtra("deckName", deck.name)
-                            startActivity(intent)
-                            overridePendingTransition(0, 0)
-                        }
-                        // Guardar o id do deck no tag do frameLayout para uso no drop
-                        frameLayout.tag = deck.idDeck
-                        llTop.addView(frameLayout)
-                    }
-                }
-            } else {
-                // Exibe mensagem de erro se falhar ao buscar decks
-                val errorText = TextView(this@StudyRoomActivity).apply {
-                    text = "Erro ao carregar decks."
-                    setTextColor(resources.getColor(android.R.color.white, null))
-                    textSize = 16f
-                    gravity = android.view.Gravity.CENTER
-                }
-                llTop.addView(errorText)
+            // Botões e overlays
+            val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)
+            val btnLeftCenter = findViewById<Button>(R.id.btnLeftCenter)
+            val btnRightCenter = findViewById<Button>(R.id.btnRightCenter)
+            val leftOverlay = findViewById<FrameLayout>(R.id.leftOverlay)
+            val btnCloseOverlay = findViewById<ImageButton>(R.id.btnCloseOverlay)
+
+
+            // Eventos de clique dos botões
+            btnLeftCenter.setOnClickListener {
+                leftOverlay.visibility = View.VISIBLE
+                btnReturnToHome.visibility = View.INVISIBLE
+                btnLeftCenter.visibility = View.INVISIBLE
             }
-        }
 
+            btnRightCenter.setOnClickListener {
+                val intent = Intent(this@StudyRoomActivity, FlashcardActivity::class.java)
+                if (selectedDeckId == null) {
+                    Toast.makeText(
+                        this@StudyRoomActivity,
+                        "Por favor, arraste um deck para o caldeirão antes de começar a estudar!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
+                intent.putExtra("deckId", selectedDeckId)
+                startActivity(intent)
+//                overridePendingTransition(0, 0)
+//                finish()
+            }
 
+            btnCloseOverlay.setOnClickListener {
+                leftOverlay.visibility = View.GONE
+                btnReturnToHome.visibility = View.VISIBLE
+                btnLeftCenter.visibility = View.VISIBLE
+            }
 
-        // Botões e overlays
-        val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)
-        val btnLeftCenter = findViewById<Button>(R.id.btnLeftCenter)
-        val btnRightCenter = findViewById<Button>(R.id.btnRightCenter)
-        val leftOverlay = findViewById<FrameLayout>(R.id.leftOverlay)
-        val btnCloseOverlay = findViewById<ImageButton>(R.id.btnCloseOverlay)
+            btnReturnToHome.setOnClickListener {
+                startActivity(Intent(this@StudyRoomActivity, HomeActivity::class.java)) // Inicia a MainActivity
+                overridePendingTransition(0, 0)
+                finish() // Finaliza a atividade atual e retorna para a anterior (MainActivity)
+            }
 
-
-        // Eventos de clique dos botões
-        btnLeftCenter.setOnClickListener {
-            leftOverlay.visibility = View.VISIBLE
-            btnReturnToHome.visibility = View.INVISIBLE
-            btnLeftCenter.visibility = View.INVISIBLE
-        }
-
-        btnRightCenter.setOnClickListener {
-            startActivity(Intent(this, FlashcardActivity::class.java))
-            overridePendingTransition(0, 0)
-            finish()
-        }
-
-        btnCloseOverlay.setOnClickListener {
-            leftOverlay.visibility = View.GONE
-            btnReturnToHome.visibility = View.VISIBLE
-            btnLeftCenter.visibility = View.VISIBLE
-        }
-
-        btnReturnToHome.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java)) // Inicia a MainActivity
-            overridePendingTransition(0, 0)
-            finish() // Finaliza a atividade atual e retorna para a anterior (MainActivity)
-        }
-
-        // Botão de teste para abrir CreateDeckActivity
-        val btnOpenCreateDeck = findViewById<Button>(R.id.btnOpenCreateDeck)
-        btnOpenCreateDeck.setOnClickListener {
-            CreateDeckDialogFragment().show(supportFragmentManager, "CreateDeckDialog")
+            // Botão de teste para abrir CreateDeckActivity
+            val btnOpenCreateDeck = findViewById<Button>(R.id.btnOpenCreateDeck)
+            btnOpenCreateDeck.setOnClickListener {
+                CreateDeckDialogFragment().show(supportFragmentManager, "CreateDeckDialog")
+            }
         }
     }
 }
