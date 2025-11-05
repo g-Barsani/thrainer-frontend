@@ -32,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.bumptech.glide.Glide
+import com.goblenstudios.thrainer.repositories.UserCardRepository
 
 class StudyRoomActivity : AppCompatActivity() {
     // Função utilitária para converter dp em px
@@ -39,6 +40,8 @@ class StudyRoomActivity : AppCompatActivity() {
 
     private var selectedDeckId: Long? = null
     private val deckRepository = DeckRepository(RetrofitInstance.deckService)
+
+    private val userCardRepository = UserCardRepository(RetrofitInstance.userCardService)
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -238,6 +241,44 @@ class StudyRoomActivity : AppCompatActivity() {
                     ).show()
                     return@setOnClickListener
                 }
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val result = withContext(Dispatchers.IO) {
+                            userCardRepository.practiceCardsByDeck(userId, selectedDeckId!!)
+                        }
+
+                        if (result.isSuccess) {
+                            val cards = result.getOrNull().orEmpty()
+                            if (cards.isEmpty()) {
+                                Toast.makeText(
+                                    this@StudyRoomActivity,
+                                    "Deck selecionado não possui cards.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                return@launch
+                            }
+
+                        } else {
+                            Toast.makeText(
+                                this@StudyRoomActivity,
+                                "Erro ao verificar cards do deck.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@StudyRoomActivity,
+                            "Erro de conexão: ${e.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
+
+
                 intent.putExtra("deckId", selectedDeckId)
                 startActivity(intent)
 //                overridePendingTransition(0, 0)

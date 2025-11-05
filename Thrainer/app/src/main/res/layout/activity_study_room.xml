@@ -39,7 +39,7 @@
         android:id="@+id/llCauldron"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="#600000ff"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/btnRightCenter"
