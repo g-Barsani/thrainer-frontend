@@ -8,101 +8,40 @@
     android:background="#000">
 
     <!-- Imagem de fundo -->
+
+    <!-- Overlay semitransparente (aparece junto com o modal) -->
+
+    <!-- Modal centralizado -->
+
     <ImageView
         android:id="@+id/backgroundImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/porta"
-        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/layout_tcc"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Overlay semitransparente (aparece junto com o modal) -->
-    <View
-        android:id="@+id/overlay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#4DFFFFFF"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/btnGoToStudyRoom"
+        android:layout_width="84dp"
+        android:layout_height="100dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="Laboratório do Mago"
+        android:padding="16dp"
+        android:rotation="15"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.394"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Modal centralizado -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/modalContent"
-        android:layout_width="500dp"
-        android:layout_height="500dp"
-        android:background="#000"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintHeight_percent="0.6"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!-- ImageView como fundo -->
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/old_scroll"
-                android:scaleType="centerCrop"/>
-
-            <!-- Conteúdo do modal -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="32dp">
-
-                <!-- Botão 1 -->
-                <Button
-                    android:id="@+id/btnGoToStudyRoom"
-                    android:layout_width="246dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/rounded_button"
-                    android:backgroundTint="#0a7ea4"
-                    android:fontFamily="@font/goudymediaeval"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    android:text="Laboratório do Mago"
-                    android:textColor="#000"
-                    android:textSize="22sp" />
-
-                <!-- Botão 2 -->
-                <Button
-                    android:id="@+id/btnGoToCommunity"
-                    android:layout_width="244dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_button"
-                    android:backgroundTint="#0a7ea4"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    android:text="Feitiços da Comunidade"
-                    android:textColor="#000"
-                    android:fontFamily="@font/goudymediaeval"
-                    android:textSize="22sp"
-                    />
-            </LinearLayout>
-
-        </FrameLayout>>
-
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="@+id/backgroundImage"
+        app:layout_constraintVertical_bias="0.857"
+        app:srcCompat="@drawable/arrow" />
 
     <ImageButton
         android:id="@+id/btnLogout"
@@ -116,4 +55,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_logout" />
+
+    <ImageButton
+        android:id="@+id/btnGoToCommunity"
+        android:layout_width="61dp"
+        android:layout_height="81dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Feitiços da Comunidade"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:rotation="270"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.445"
+        app:srcCompat="@drawable/arrow" />
 </androidx.constraintlayout.widget.ConstraintLayout>
