@@ -218,7 +218,7 @@ class StudyRoomActivity : AppCompatActivity() {
 
             // Botões e overlays
             val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)
-            val btnLeftCenter = findViewById<Button>(R.id.btnLeftCenter)
+            val btnLeftCenter = findViewById<ImageButton>(R.id.btnLeftCenter)
             val btnRightCenter = findViewById<Button>(R.id.btnRightCenter)
             val leftOverlay = findViewById<FrameLayout>(R.id.leftOverlay)
             val btnCloseOverlay = findViewById<ImageButton>(R.id.btnCloseOverlay)
