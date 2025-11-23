@@ -118,7 +118,8 @@
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Minha Lista"
+                    android:text="Minhas poções"
+                    android:fontFamily="@font/goudymediaeval"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -126,13 +127,15 @@
                 <!-- Botão criar deck -->
                 <Button
                     android:id="@+id/btnOpenCreateDeck"
-                    android:layout_width="1dp"
-                    android:layout_height="50dp"
+                    android:layout_width="4dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="+"
-                    android:textColor="@android:color/black"
+                    android:text="Criar"
+                    android:backgroundTint="#68985F"
+                    android:fontFamily="@font/goudymediaeval"
+                    android:textColor="#FFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -201,12 +204,13 @@
         android:id="@+id/tvDeckName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/goudymediaeval"
         android:text="Escolha um deck."
         android:textColor="@android:color/white"
-        android:textSize="15sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.986"
+        app:layout_constraintHorizontal_bias="0.944"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.587" />
