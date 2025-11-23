@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.goblenstudios.thrainer.repositories.CardRepository
 import com.goblenstudios.thrainer.dtos.ReturnCardDto
 import com.goblenstudios.thrainer.services.RetrofitInstance
@@ -56,6 +58,13 @@ class DeckScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_deck_screen)
+
+        // Carregar GIF animado no background
+        val backgroundImage = findViewById<ImageView>(R.id.backgroundImage)
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.study_room_animated)
+            .into(backgroundImage)
 
         recyclerView = findViewById(R.id.recyclerViewDecks)
         recyclerView.layoutManager = LinearLayoutManager(this)
