@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F0FF"
+    android:background="#000"
     tools:context=".CreateCardActivity">
 
     <TextView
@@ -82,5 +82,41 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="32dp"/>
+
+    <!-- Overlay com GIF animado que se move -->
+    <FrameLayout
+        android:id="@+id/gifOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Primeiro GIF - PEQUENO -->
+        <ImageView
+            android:id="@+id/movingGif1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:contentDescription="Moving animated element 1"
+            android:scaleType="centerInside" />
+
+        <!-- Segundo GIF - MÉDIO -->
+        <ImageView
+            android:id="@+id/movingGif2"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="Moving animated element 2"
+            android:scaleType="centerInside" />
+
+        <!-- Terceiro GIF - GRANDE -->
+        <ImageView
+            android:id="@+id/movingGif3"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:contentDescription="Moving animated element 3"
+            android:scaleType="centerInside" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
