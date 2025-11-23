@@ -10,9 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -53,6 +52,17 @@ class DeckScreenActivity : AppCompatActivity() {
     private lateinit var adapter: CardAdapter
     private val cardRepository = CardRepository(RetrofitInstance.cardService)
     private lateinit var tvDeckName: TextView
+    private var currentDeckId: Long = 0L
+
+    // Registrar launcher para receber resultado da CreateCardActivity
+    private val createCardLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // Card foi criado com sucesso, recarregar a lista
+            loadCards(currentDeckId)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +86,8 @@ class DeckScreenActivity : AppCompatActivity() {
             return
         }
 
+        currentDeckId = deckId
+
         // Buscar nome do deck (opcional: pode ser passado por intent ou buscar via API)
         val deckName = intent.getStringExtra("deckName")
         if (deckName != null) {
@@ -84,6 +96,24 @@ class DeckScreenActivity : AppCompatActivity() {
             tvDeckName.text = "Deck"
         }
 
+        // Carregar cards pela primeira vez
+        loadCards(deckId)
+
+        val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)
+        btnReturnToHome.setOnClickListener {
+            finish()
+        }
+
+        val btnCreateCard = findViewById<Button>(R.id.btnCreateCard)
+        btnCreateCard.setOnClickListener {
+            val intent = Intent(this, CreateCardActivity::class.java)
+            intent.putExtra("deckId", currentDeckId)
+            createCardLauncher.launch(intent) // Usar launcher ao invés de startActivity
+        }
+    }
+
+    // Função para carregar/recarregar cards
+    private fun loadCards(deckId: Long) {
         lifecycleScope.launch {
             val result = withContext(Dispatchers.IO) { cardRepository.getCardsByDeck(deckId) }
             if (result.isSuccess) {
@@ -93,19 +123,6 @@ class DeckScreenActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this@DeckScreenActivity, "Erro ao carregar cartas", Toast.LENGTH_SHORT).show()
             }
-        }
-
-        val btnReturnToHome = findViewById<Button>(R.id.btnReturnToHome)
-        btnReturnToHome.setOnClickListener {
-            finish()
-        }
-
-        val btnCreateCard = findViewById<Button>(R.id.btnCreateCard)
-        btnCreateCard.setOnClickListener {
-            val deckId = intent.getLongExtra("deckId", 0L)
-            val intent = Intent(this, CreateCardActivity::class.java)
-            intent.putExtra("deckId", deckId)
-            startActivity(intent)
         }
     }
 }

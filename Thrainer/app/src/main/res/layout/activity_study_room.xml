@@ -118,7 +118,7 @@
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Minhas poções"
+                    android:text="Meus Feitiços"
                     android:fontFamily="@font/goudymediaeval"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"

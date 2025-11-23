@@ -106,6 +106,7 @@ class CreateCardActivity : AppCompatActivity() {
                 val result = withContext(Dispatchers.IO) { cardRepository.createCard(dto) }
                 if (result.isSuccess) {
                     Toast.makeText(this@CreateCardActivity, "Carta criada com sucesso!", Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK) // Notificar que o card foi criado com sucesso
                     finish()
                 } else {
                     Toast.makeText(this@CreateCardActivity, "Erro ao criar carta", Toast.LENGTH_SHORT).show()

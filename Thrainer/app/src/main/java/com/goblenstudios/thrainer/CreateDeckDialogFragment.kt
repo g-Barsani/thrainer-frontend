@@ -19,6 +19,17 @@ import kotlinx.coroutines.launch
 
 class CreateDeckDialogFragment : DialogFragment() {
 
+    // Interface para callback quando deck for criado
+    interface OnDeckCreatedListener {
+        fun onDeckCreated()
+    }
+
+    private var onDeckCreatedListener: OnDeckCreatedListener? = null
+
+    // Método para definir o listener
+    fun setOnDeckCreatedListener(listener: OnDeckCreatedListener) {
+        onDeckCreatedListener = listener
+    }
 
     private val deckRepository = DeckRepository(RetrofitInstance.deckService)
 
@@ -60,6 +71,8 @@ class CreateDeckDialogFragment : DialogFragment() {
                 if (result.isSuccess) {
                     Toast.makeText(requireContext(), "Deck criado com sucesso!", Toast.LENGTH_SHORT)
                         .show()
+                    // Notificar o listener que o deck foi criado
+                    onDeckCreatedListener?.onDeckCreated()
                     dismiss()
                 } else {
                     val errorMsg =
