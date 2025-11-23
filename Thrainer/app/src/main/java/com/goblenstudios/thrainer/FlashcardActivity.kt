@@ -30,7 +30,7 @@ import kotlinx.coroutines.withContext
 class FlashcardActivity : AppCompatActivity() {
     private lateinit var tvQuestion: TextView
     private lateinit var tvAnswer: TextView
-    private lateinit var btnShowAnswer: Button
+    private lateinit var btnShowAnswer: ImageView
     private lateinit var btnAcertou: Button
     private lateinit var btnErrou: Button
     private lateinit var btnEndSession: Button
@@ -79,8 +79,14 @@ class FlashcardActivity : AppCompatActivity() {
         // Carregar o background como bitmap (primeiro frame) para NÃO animar constantemente
         Glide.with(this)
             .asBitmap()
-            .load(R.drawable.practice_screen_animated)
+            .load(R.drawable.flashcard_study)
             .into(ivBackground)
+
+        // Carregar GIF animado no botão "Mostrar resposta"
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.cauldron_symbol) // Temporário - adicione seu GIF personalizado aqui
+            .into(btnShowAnswer)
 
         // estado inicial
         tvAnswer.visibility = View.GONE
@@ -89,7 +95,6 @@ class FlashcardActivity : AppCompatActivity() {
         btnAcertou.visibility = View.GONE
         btnErrou.visibility = View.GONE
         btnShowAnswer.visibility = View.VISIBLE
-        btnShowAnswer.text = "Mostrar resposta"
 
         userCardRepository = UserCardRepository(RetrofitInstance.userCardService)
         val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
@@ -266,7 +271,6 @@ class FlashcardActivity : AppCompatActivity() {
         ivAnswer.visibility = View.GONE
         ivQuestion.visibility = View.VISIBLE
         btnShowAnswer.visibility = View.VISIBLE
-        btnShowAnswer.text = "Mostrar resposta"
         btnAcertou.visibility = View.GONE
         btnErrou.visibility = View.GONE
 
