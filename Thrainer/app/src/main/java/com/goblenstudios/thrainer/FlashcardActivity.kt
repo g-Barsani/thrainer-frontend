@@ -122,7 +122,7 @@ class FlashcardActivity : AppCompatActivity() {
                     showCurrentCard()
                 }
             } else {
-                Toast.makeText(this@FlashcardActivity, "Erro ao buscar cards para prática", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@FlashcardActivity, "Erro ao buscar magias para prática", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }

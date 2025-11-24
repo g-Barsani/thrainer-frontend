@@ -43,6 +43,8 @@ class StudyRoomActivity : AppCompatActivity() {
     private val userCardRepository = UserCardRepository(RetrofitInstance.userCardService)
     private var userId: Long = -1L
     private lateinit var llTop: LinearLayout
+    private var isLoadingDecks = false
+    private var isFirstLoad = true
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,7 +183,7 @@ class StudyRoomActivity : AppCompatActivity() {
                             if (cards.isEmpty()) {
                                 Toast.makeText(
                                     this@StudyRoomActivity,
-                                    "Deck selecionado não possui cards.",
+                                    "Feitiço selecionado não possui magias.",
                                     Toast.LENGTH_LONG
                                 ).show()
                                 return@launch
@@ -190,7 +192,7 @@ class StudyRoomActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(
                                 this@StudyRoomActivity,
-                                "Erro ao verificar cards do deck.",
+                                "Erro ao verificar magias do feitiço.",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -239,15 +241,55 @@ class StudyRoomActivity : AppCompatActivity() {
             }
         }
 
+    override fun onResume() {
+        super.onResume()
+        // Reset loading flag in case it got stuck
+        if (isLoadingDecks) {
+            android.util.Log.w("StudyRoomActivity", "onResume: Resetting stuck isLoadingDecks flag")
+            isLoadingDecks = false
+        }
+
+        // Only reload decks if this is not the first load (coming from another activity)
+        if (isFirstLoad) {
+            android.util.Log.d("StudyRoomActivity", "onResume: First load, skipping reload")
+            isFirstLoad = false
+        } else {
+            // Reload decks when returning to this activity
+            android.util.Log.d("StudyRoomActivity", "onResume: Returning from another activity, reloading decks")
+            loadDecks()
+        }
+    }
+
     // Função para carregar/recarregar decks
     private fun loadDecks() {
-        // Limpar lista atual antes de recarregar
-        llTop.removeAllViews()
+        // Prevent concurrent loading
+        if (isLoadingDecks) {
+            android.util.Log.d("StudyRoomActivity", "loadDecks() already running, skipping")
+            return
+        }
+        isLoadingDecks = true
+        android.util.Log.d("StudyRoomActivity", "loadDecks() started")
 
         CoroutineScope(Dispatchers.Main).launch {
+            // Clear views right before loading to avoid race conditions
+            llTop.removeAllViews()
+            android.util.Log.d("StudyRoomActivity", "Cleared all views from llTop")
+
             val result = withContext(Dispatchers.IO) { deckRepository.getDecksByUser(userId) }
             if (result.isSuccess) {
-                val decks: List<ReturnDeckDto> = result.getOrNull() ?: emptyList()
+                val allDecks: List<ReturnDeckDto> = result.getOrNull() ?: emptyList()
+                android.util.Log.d("StudyRoomActivity", "Loaded ${allDecks.size} decks from API")
+
+                // Filter out duplicates by deck ID in case API returns duplicates
+                val decks = allDecks.distinctBy { it.idDeck }
+                if (allDecks.size != decks.size) {
+                    android.util.Log.w("StudyRoomActivity", "WARNING: API returned ${allDecks.size - decks.size} duplicate deck(s)!")
+                    android.util.Log.w("StudyRoomActivity", "Original IDs: ${allDecks.map { it.idDeck }}")
+                    android.util.Log.w("StudyRoomActivity", "Filtered to: ${decks.map { it.idDeck }}")
+                }
+
+                android.util.Log.d("StudyRoomActivity", "Displaying ${decks.size} unique decks")
+
                 if (decks.isEmpty()) {
                     // Exibe mensagem se não houver decks
                     val emptyText = TextView(this@StudyRoomActivity).apply {
@@ -301,6 +343,7 @@ class StudyRoomActivity : AppCompatActivity() {
                         }
                         // Guardar o id do deck no tag do frameLayout para uso no drop
                         frameLayout.tag = deck.idDeck
+                        android.util.Log.d("StudyRoomActivity", "Adding deck to UI: ${deck.name} (ID: ${deck.idDeck})")
                         llTop.addView(frameLayout)
                     }
                 }
@@ -314,6 +357,10 @@ class StudyRoomActivity : AppCompatActivity() {
                 }
                 llTop.addView(errorText)
             }
+
+            android.util.Log.d("StudyRoomActivity", "loadDecks() completed. Total child views: ${llTop.childCount}")
+            // Reset loading flag
+            isLoadingDecks = false
         }
     }
 }
